@@ -9,13 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/mongoose": "^5.11.96",
+    "bcryptjs": "^2.4.3",
     "mongo": "^0.1.0",
     "mongoose": "^8.9.2",
     "next": "15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
     "react-icons": "^5.4.0"
+=======
+    "react-hot-toast": "^2.4.1"
+>>>>>>> d869ed4848420b6ac33524cfb7d4660c3b37dc27
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
