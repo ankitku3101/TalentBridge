@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 const StudentDashboard = () => {
   return (
-    <div className="flex flex-col min-h-screen p-2">
+    <div className="flex flex-col min-h-screen p-0">
       {/* Header */}
       <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
         {/* Hamburger Menu and Heading Side by Side on the Left */}
