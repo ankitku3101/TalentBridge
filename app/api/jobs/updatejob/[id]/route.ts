@@ -1,7 +1,6 @@
 import Job from "@/models/Job";
 import { NextRequest,NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
-import { error } from "console";
 
 await connectMongo();
 
@@ -11,7 +10,7 @@ interface Params{
 
 export async function PATCH(request: NextRequest,{ params }:Params){
     try {
-        const { id } = params;
+        const { id } = await params;
         const requestBody = await request.json();
         const {
             description,
