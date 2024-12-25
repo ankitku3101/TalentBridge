@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 const StudentDashboard = () => {
   return (
-    <div className="flex flex-col min-h-screen p-6">
+    <div className="flex flex-col min-h-screen p-0">
       {/* Header */}
       <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
         {/* Hamburger Menu and Heading Side by Side on the Left */}
@@ -47,8 +47,11 @@ const StudentDashboard = () => {
                 feugiat libero eget felis vulputate, at tincidunt ante scelerisque.
               </p>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex justify-between items-center">
               <p className="text-gray-500 text-xs">Location: City, Country</p>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+                Apply
+              </button>
             </CardFooter>
           </Card>
         ))}

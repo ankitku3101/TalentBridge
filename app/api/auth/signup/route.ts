@@ -1,5 +1,5 @@
 import { hash } from 'bcryptjs';
-import Student from '@/models/Student'; 
+import Student from '@/models/Student';
 import Employer from '@/models/Employer';
 import dbConnect from '@/lib/mongodb';
 import { NextRequest, NextResponse } from 'next/server';
@@ -7,13 +7,28 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, password, role, company, position, hiringFor, contactNumber } = body;
+    const {
+      name,
+      age,
+      email,
+      password,
+      rollNumber,
+      degree,
+      graduationYear,
+      skills,
+      phone,
+      role,
+      company,
+      position,
+      hiringFor,
+      contactNumber,
+    } = body;
 
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: 'Name, email, and password are required' }, { status: 400 });
+    if (!name || !email || !password || !rollNumber || !degree || !graduationYear || !age || !phone) {
+      return NextResponse.json({ error: 'Missing required fields for student signup' }, { status: 400 });
     }
 
-    await dbConnect(); 
+    await dbConnect();
 
     if (role === 'employer') {
       if (!company) {
@@ -39,21 +54,26 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ message: 'Employer created successfully', user: newEmployer }, { status: 201 });
     } else {
-      const existingUser = await Student.findOne({ email });
-      if (existingUser) {
+      const existingStudent = await Student.findOne({ email });
+      if (existingStudent) {
         return NextResponse.json({ error: 'Email is already in use' }, { status: 400 });
       }
 
       const hashedPassword = await hash(password, 10);
 
-      const newUser = await Student.create({
+      const newStudent = await Student.create({
         name,
+        age,
         email,
         password: hashedPassword,
-        role: role || 'student',
+        rollNumber,
+        degree,
+        graduationYear,
+        skills: skills || [], 
+        phone,
       });
 
-      return NextResponse.json({ message: 'User created successfully', user: newUser }, { status: 201 });
+      return NextResponse.json({ message: 'Student created successfully', user: newStudent }, { status: 201 });
     }
   } catch (error) {
     console.error(error);
