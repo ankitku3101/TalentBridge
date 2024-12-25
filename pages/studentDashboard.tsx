@@ -1,8 +1,9 @@
 import { FaUserCircle, FaBell, FaSearch, FaBars } from 'react-icons/fa';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const StudentDashboard = () => {
   return (
-    <div className="flex flex-col min-h-screen p-6"> {/* Added padding to the entire page */}
+    <div className="flex flex-col min-h-screen p-6">
       {/* Header */}
       <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
         {/* Hamburger Menu and Heading Side by Side on the Left */}
@@ -30,16 +31,26 @@ const StudentDashboard = () => {
 
       {/* Body */}
       <main className="flex-1 bg-gray-100 p-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {/* Job-related cards */}
+        {/* Job-related cards using ShadCN Card component */}
         {[...Array(6)].map((_, index) => (
-          <div
+          <Card
             key={index}
-            className="bg-white shadow-md rounded-md p-4 hover:shadow-lg"
+            className="shadow-md rounded-lg hover:shadow-xl hover:shadow-blue-500 transition-all duration-300"
           >
-            <h3 className="font-bold text-lg">Job Title {index + 1}</h3>
-            <p className="text-gray-600">Company Name</p>
-            <p className="text-gray-600">Location</p>
-          </div>
+            <CardHeader>
+              <CardTitle>Job Title {index + 1}</CardTitle>
+              <p className="text-gray-700 text-sm">Company Name</p>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 text-sm mb-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                feugiat libero eget felis vulputate, at tincidunt ante scelerisque.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <p className="text-gray-500 text-xs">Location: City, Country</p>
+            </CardFooter>
+          </Card>
         ))}
       </main>
     </div>
