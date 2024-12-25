@@ -14,7 +14,8 @@ export async function POST(request:NextRequest) {
             location,
             employmentType,
             salaryRange,
-            skillsRequired
+            skillsRequired,
+            postedBy
         } = requestBody;
 
         //Employe verification.
@@ -30,7 +31,8 @@ export async function POST(request:NextRequest) {
             location,
             employmentType,
             salaryRange,
-            skillsRequired
+            skillsRequired,
+            postedBy
         })
 
         const response = NextResponse.json({message:"Job created",success:true,data:JobCreated},{status:201});
