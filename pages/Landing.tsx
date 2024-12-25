@@ -15,10 +15,10 @@ const LandingPage: React.FC = () => {
 
           {/* Navigation */}
           <div className="space-x-4">
-            <Link href="/login" className="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
+            <Link href="/auth/signin" className="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
               Sign In
             </Link>
-            <Link href="/register" className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-md font-medium hover:bg-yellow-400 transition">
+            <Link href="/auth/signup" className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-md font-medium hover:bg-yellow-400 transition">
               Sign Up
             </Link>
           </div>
