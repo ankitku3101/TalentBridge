@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { FaBriefcase, FaUsers, FaGraduationCap } from "react-icons/fa";
 
 const LandingPage: React.FC = () => {
@@ -15,16 +15,10 @@ const LandingPage: React.FC = () => {
 
           {/* Navigation */}
           <div className="space-x-4">
-            <Link
-              to="/login"
-              className="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition"
-            >
+            <Link href="/login" className="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition">
               Sign In
             </Link>
-            <Link
-              to="/register"
-              className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-md font-medium hover:bg-yellow-400 transition"
-            >
+            <Link href="/register" className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-md font-medium hover:bg-yellow-400 transition">
               Sign Up
             </Link>
           </div>
@@ -41,16 +35,10 @@ const LandingPage: React.FC = () => {
             Connecting Students, Employers, and Universities to Build Careers of Tomorrow.
           </p>
           <div className="flex justify-center space-x-4">
-            <Link
-              to="#features"
-              className="bg-yellow-300 text-indigo-800 px-6 py-3 rounded-md font-medium hover:bg-yellow-400 transition"
-            >
+            <Link href="#features" className="bg-yellow-300 text-indigo-800 px-6 py-3 rounded-md font-medium hover:bg-yellow-400 transition">
               Learn More
             </Link>
-            <Link
-              to="/dashboard"
-              className="bg-white text-indigo-800 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition"
-            >
+            <Link href="/dashboard" className="bg-white text-indigo-800 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition">
               Get Started
             </Link>
           </div>
@@ -107,13 +95,13 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 text-center text-sm">
           <p>© {new Date().getFullYear()} Talent Bridge. All rights reserved.</p>
           <div className="flex justify-center space-x-4 mt-2">
-            <Link to="/privacy" className="hover:text-yellow-300">
+            <Link href="/privacy" className="hover:text-yellow-300">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-yellow-300">
+            <Link href="/terms" className="hover:text-yellow-300">
               Terms of Service
             </Link>
-            <Link to="/contact" className="hover:text-yellow-300">
+            <Link href="/contact" className="hover:text-yellow-300">
               Contact Us
             </Link>
           </div>
