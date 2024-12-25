@@ -1,27 +1,31 @@
-import { FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
+import { FaUserCircle, FaBell, FaSearch, FaBars } from 'react-icons/fa';
 
 const StudentDashboard = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen p-6"> {/* Added padding to the entire page */}
       {/* Header */}
-      <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
-        {/* Profile Icon */}
+      <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
+        {/* Hamburger Menu and Heading Side by Side on the Left */}
         <div className="flex items-center space-x-4">
-          <FaUserCircle size={28} />
+          <FaBars size={28} className="text-white cursor-pointer" />
+          <h1 className="text-2xl font-bold text-white">Student Dashboard</h1>
         </div>
 
-        {/* Search Box */}
-        <div className="flex items-center bg-white text-black rounded-md p-2">
+        {/* Search Box in the Middle */}
+        <div className="flex items-center bg-white text-black rounded-md p-2 max-w-sm mx-4">
           <FaSearch className="mr-2" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search jobs"
             className="outline-none w-full"
           />
         </div>
 
-        {/* Notification Icon */}
-        <FaBell size={28} />
+        {/* Profile Icon and Notification Icon on the Right */}
+        <div className="flex items-center space-x-4">
+          <FaUserCircle size={28} />
+          <FaBell size={28} />
+        </div>
       </header>
 
       {/* Body */}
