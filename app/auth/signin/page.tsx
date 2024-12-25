@@ -11,11 +11,11 @@ export default function SignIn() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await signIn("credentials", {
-      email,
-      password,
-      callbackUrl: "/", 
-      redirect: false,  
-    });
+        username: email, 
+        password,
+        callbackUrl: "/", 
+        redirect: false,  
+      });
 
     if (result?.error) {
       setError("Invalid email or password");
