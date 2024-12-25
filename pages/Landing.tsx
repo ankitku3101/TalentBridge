@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FaBriefcase, FaUsers, FaGraduationCap } from "react-icons/fa";
 
 const LandingPage: React.FC = () => {
@@ -14,18 +15,18 @@ const LandingPage: React.FC = () => {
 
           {/* Navigation */}
           <div className="space-x-4">
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition"
             >
               Sign In
-            </a>
-            <a
-              href="/register"
+            </Link>
+            <Link
+              to="/register"
               className="bg-yellow-300 text-indigo-800 px-4 py-2 rounded-md font-medium hover:bg-yellow-400 transition"
             >
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -40,18 +41,18 @@ const LandingPage: React.FC = () => {
             Connecting Students, Employers, and Universities to Build Careers of Tomorrow.
           </p>
           <div className="flex justify-center space-x-4">
-            <a
-              href="#features"
+            <Link
+              to="#features"
               className="bg-yellow-300 text-indigo-800 px-6 py-3 rounded-md font-medium hover:bg-yellow-400 transition"
             >
               Learn More
-            </a>
-            <a
-              href="/dashboard"
+            </Link>
+            <Link
+              to="/dashboard"
               className="bg-white text-indigo-800 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition"
             >
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -106,9 +107,15 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 text-center text-sm">
           <p>© {new Date().getFullYear()} Talent Bridge. All rights reserved.</p>
           <div className="flex justify-center space-x-4 mt-2">
-            <a href="#" className="hover:text-yellow-300">Privacy Policy</a>
-            <a href="#" className="hover:text-yellow-300">Terms of Service</a>
-            <a href="#" className="hover:text-yellow-300">Contact Us</a>
+            <Link to="/privacy" className="hover:text-yellow-300">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-yellow-300">
+              Terms of Service
+            </Link>
+            <Link to="/contact" className="hover:text-yellow-300">
+              Contact Us
+            </Link>
           </div>
         </div>
       </footer>
