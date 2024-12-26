@@ -1,27 +1,43 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await signIn("credentials", {
-        username: email, 
-        password,
-        callbackUrl: "/", 
-        redirect: false,  
-      });
+      username: email,
+      password,
+      redirect: false, 
+    });
 
     if (result?.error) {
       setError("Invalid email or password");
     } else {
       setError("");
-      window.location.href = result?.url || "/";
+      const session = await getSession(); 
+      console.log("Session after sign-in...:", session);
+      
+      const id = session?.user?.id
+      console.log("ID: ",id);       
+
+      const role = session?.user?.role; 
+      console.log(role);
+      
+      if (role === "student") {
+        router.push("/student/dashboard");
+      } else if (role === "employer") {
+        router.push("/employee/dashboard");
+      } else {
+        router.push("/");
+      }
     }
   };
 
