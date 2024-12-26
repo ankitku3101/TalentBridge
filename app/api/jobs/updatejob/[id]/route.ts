@@ -18,6 +18,8 @@ export async function PATCH(request: NextRequest,{ params }:Params){
             employmentType,
             salaryRange,
             skillsRequired,
+            minSalary,
+            maxSalary,
         } = requestBody;
 
         //Verification
@@ -30,7 +32,14 @@ export async function PATCH(request: NextRequest,{ params }:Params){
             return NextResponse.json({error:"Invalid or mismatched data format, requires an array of string."},{status:400});
         }
 
-        const udpatedJob = await Job.findByIdAndUpdate({_id:id},{description,location,employmentType,salaryRange,skillsRequired},{new:true});
+        const udpatedJob = await Job.findByIdAndUpdate({_id:id},{
+            description,
+            location,
+            employmentType,
+            minSalary,
+            maxSalary,
+            skillsRequired
+        },{new:true});
 
         if(!udpatedJob){
             return NextResponse.json({error:"No such Id found or Update failed."},{status:404});
