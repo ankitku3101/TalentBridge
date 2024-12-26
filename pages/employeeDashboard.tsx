@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaUserTie, FaBell, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
@@ -40,18 +40,17 @@ const jobData = [
 ];
 
 const EmployeeDashboard = () => {
+  const [firstName, setFirstName] = useState(""); // State to store the first name
   const router = useRouter();
-  const [firstName, setFirstName] = useState<string | null>(null);
 
   useEffect(() => {
     const validateSession = async () => {
       const session = await getSession();
       if (!session || session?.user?.role !== "employer") {
-        router.push("/auth/signin"); 
+        router.push("/auth/signin");
       } else {
-        // Assuming first name is stored in `session.user.name` or `session.user.firstName`
-        const name = session?.user?.name || session?.user?.firstName;
-        setFirstName(name);
+        // Set the first name from the session data (assuming it's stored as session.user.name)
+        setFirstName(session?.user?.name || "Employer");
       }
     };
     validateSession();
@@ -73,7 +72,7 @@ const EmployeeDashboard = () => {
             className="hover:scale-125 hover:text-yellow-300 transition-transform duration-300"
           />
           <span className="hidden sm:inline text-lg font-semibold">
-            {firstName ? `Welcome, ${firstName}` : "Welcome, Employer"}
+            Welcome, {firstName} {/* Display the first name here */}
           </span>
         </div>
 
