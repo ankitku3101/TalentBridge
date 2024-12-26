@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"; 
 import Link from "next/link";
 import { FaBriefcase, FaUsers, FaGraduationCap } from "react-icons/fa";
 
@@ -53,24 +53,30 @@ const LandingPage: React.FC = () => {
           </h2>
           <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
             {/* Feature 1 */}
-            <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-              <FaGraduationCap size={48} className="text-indigo-600 mx-auto mb-4" />
+            <div className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-2xl hover:bg-blue-100 transform hover:scale-105 transition duration-300">
+              <div className="animate-bounce">
+                <FaGraduationCap size={48} className="text-blue-600 mx-auto mb-4" />
+              </div>
               <h3 className="text-lg font-bold mb-2">For Students</h3>
               <p className="text-gray-600">
                 Access personalized job recommendations, enhance your skills, and launch your dream career.
               </p>
             </div>
             {/* Feature 2 */}
-            <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-              <FaBriefcase size={48} className="text-indigo-600 mx-auto mb-4" />
+            <div className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-2xl hover:bg-blue-100 transform hover:scale-105 transition duration-300">
+              <div className="animate-bounce">
+                <FaBriefcase size={48} className="text-blue-600 mx-auto mb-4" />
+              </div>
               <h3 className="text-lg font-bold mb-2">For Employers</h3>
               <p className="text-gray-600">
                 Discover top talent, post job opportunities, and grow your team with the right skills.
               </p>
             </div>
             {/* Feature 3 */}
-            <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-              <FaUsers size={48} className="text-indigo-600 mx-auto mb-4" />
+            <div className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-2xl hover:bg-blue-100 transform hover:scale-105 transition duration-300">
+              <div className="animate-bounce">
+                <FaUsers size={48} className="text-blue-600 mx-auto mb-4" />
+              </div>
               <h3 className="text-lg font-bold mb-2">For Universities</h3>
               <p className="text-gray-600">
                 Gain insights on student performance, track placements, and enhance employability outcomes.
