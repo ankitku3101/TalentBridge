@@ -22,10 +22,15 @@ const jobSchema = new mongoose.Schema(
       type: String, 
       enum: ['Full-time', 'Part-time', 'Internship', 'Contract'], 
       required: true 
-    }, 
-    salaryRange: { 
-      type: String 
-    }, 
+    },
+    minSalary:{
+      type:Number,
+      default:[0,"Can't be In negative"]
+    },
+    maxSalary:{
+      type:Number,
+      default:[0,"Can't be In negative"]
+    },
     skillsRequired: [String], 
     postedBy: { 
       type: mongoose.Schema.Types.ObjectId, 
