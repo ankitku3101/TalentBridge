@@ -1,18 +1,31 @@
-import { FaUserCircle, FaBell, FaSearch, FaBars } from 'react-icons/fa';
+'use client'
+
+import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { FaUserCircle, FaBell, FaSearch, FaBars } from "react-icons/fa";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const StudentDashboard = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const validateSession = async () => {
+      const session = await getSession();
+      if (!session || session?.user?.role !== "student") {
+        router.push("/auth/signin"); 
+      }
+    };
+    validateSession();
+  }, [router]);
+
   return (
     <div className="flex flex-col min-h-screen p-0">
-      {/* Header */}
+      {/* Dashboard Header */}
       <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
-        {/* Hamburger Menu and Heading Side by Side on the Left */}
         <div className="flex items-center space-x-4">
           <FaBars size={28} className="text-white cursor-pointer" />
           <h1 className="text-2xl font-bold text-white">Student Dashboard</h1>
         </div>
-
-        {/* Search Box in the Middle */}
         <div className="flex items-center bg-white text-black rounded-md p-2 max-w-sm mx-4">
           <FaSearch className="mr-2" />
           <input
@@ -21,17 +34,14 @@ const StudentDashboard = () => {
             className="outline-none w-full"
           />
         </div>
-
-        {/* Profile Icon and Notification Icon on the Right */}
         <div className="flex items-center space-x-4">
           <FaUserCircle size={28} />
           <FaBell size={28} />
         </div>
       </header>
 
-      {/* Body */}
+      {/* Dashboard Body */}
       <main className="flex-1 bg-gray-100 p-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {/* Job-related cards using ShadCN Card component */}
         {[...Array(6)].map((_, index) => (
           <Card
             key={index}

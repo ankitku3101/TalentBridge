@@ -57,11 +57,16 @@ const SignupPage = () => {
 
       const payload = {
         ...formData,
+        role: userType.toLowerCase(), 
         age: formData.age ? parseInt(formData.age) : undefined,
         graduationYear: formData.graduationYear ? parseInt(formData.graduationYear) : undefined,
         skills: formData.skills ? formData.skills.split(',') : [],
         hiringFor: formData.hiringFor ? formData.hiringFor.split(',') : [],
-      };
+        phone: userType === 'Employer' ? formData.contactNumber : formData.phone, 
+    };    
+
+      console.log(payload);
+      
 
       const response = await fetch(endpoint, {
         method: 'POST',

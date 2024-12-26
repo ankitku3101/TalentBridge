@@ -24,13 +24,14 @@ export async function POST(request: NextRequest) {
       contactNumber,
     } = body;
 
-    if (!name || !email || !password || !rollNumber || !degree || !graduationYear || !age || !phone) {
-      return NextResponse.json({ error: 'Missing required fields for student signup' }, { status: 400 });
+    if (!name || !email || !password || !phone) {
+      return NextResponse.json({ error: 'Name, email, password, and phone are required' }, { status: 400 });
     }
 
+    const normalizedRole = role?.toLowerCase();
     await dbConnect();
 
-    if (role === 'employer') {
+    if (normalizedRole === 'employer') {
       if (!company) {
         return NextResponse.json({ error: 'Company is required for employer signup' }, { status: 400 });
       }
@@ -50,10 +51,17 @@ export async function POST(request: NextRequest) {
         position,
         hiringFor,
         contactNumber,
+        role: 'employer',
       });
 
       return NextResponse.json({ message: 'Employer created successfully', user: newEmployer }, { status: 201 });
-    } else {
+    } else if (normalizedRole === 'student') {
+      if (!rollNumber || !degree || !graduationYear || !age) {
+        return NextResponse.json({
+          error: 'Roll number, degree, graduation year, and age are required for student signup',
+        }, { status: 400 });
+      }
+
       const existingStudent = await Student.findOne({ email });
       if (existingStudent) {
         return NextResponse.json({ error: 'Email is already in use' }, { status: 400 });
@@ -69,11 +77,14 @@ export async function POST(request: NextRequest) {
         rollNumber,
         degree,
         graduationYear,
-        skills: skills || [], 
+        skills: skills || [],
         phone,
+        role: 'student',
       });
 
       return NextResponse.json({ message: 'Student created successfully', user: newStudent }, { status: 201 });
+    } else {
+      return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
     }
   } catch (error) {
     console.error(error);

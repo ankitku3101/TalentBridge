@@ -1,4 +1,9 @@
+'use client'
+
 import React from "react";
+import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FaUserTie, FaBell, FaPlusCircle } from "react-icons/fa";
 
 // Sample data for jobs
@@ -35,7 +40,17 @@ const jobData = [
   },
 ];
 
-const EmployeeDashboard: React.FC = () => {
+const EmployeeDashboard = () => {
+  const router = useRouter();
+    useEffect(() => {
+      const validateSession = async () => {
+        const session = await getSession();
+        if (!session || session?.user?.role !== "employer") {
+          router.push("/auth/signin"); 
+        }
+      };
+      validateSession();
+    }, [router]);
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}

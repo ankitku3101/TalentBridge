@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import Student from "@/models/Student";
 import Employer from "@/models/Employer";
 import dbConnect from "@/lib/mongodb";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -37,10 +37,10 @@ const handler = NextAuth({
           }
 
           return {
-            id: user._id,
+            id: user._id.toString(), 
             email: user.email,
             name: user.name,
-            role: user.company ? "employer" : "student",
+            role: user.role,
           };
         } catch (error) {
           console.error("Authorization error:", error.message);
@@ -53,6 +53,26 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/signin", 
   },
-});
+  callbacks: {
+    async jwt({ token, user }) {
+      
+      if (user) {
+        token.id = (user.id as string); 
+        token.role = (user.role as string); 
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      
+      if (token) {
+        session.user.id = token.id as string; 
+        session.user.role = token.role as string; 
+      }
+      return session;
+    },
+  },
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

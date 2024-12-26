@@ -15,12 +15,21 @@ const employerSchema = new mongoose.Schema(
       required: true, 
       unique: true 
     },
+    password: { 
+      type: String, 
+      required: true 
+    },
     position: { 
       type: String 
     }, 
     hiringFor: [String], 
     contactNumber: { 
       type: String 
+    },
+    role: { 
+      type: String,
+      required: true,
+      default: "student" 
     }, 
   },
   { 
