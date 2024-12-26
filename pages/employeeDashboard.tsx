@@ -3,7 +3,7 @@
 import React from "react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { FaUserTie, FaBell, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 
 // Sample data for jobs
