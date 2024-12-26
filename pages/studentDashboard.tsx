@@ -3,7 +3,7 @@
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaUserTie, FaSignOutAlt } from "react-icons/fa";
+import { FaUserTie, FaSignOutAlt, FaSearch } from "react-icons/fa";
 
 // Sample data for job postings
 const jobData = [
@@ -43,6 +43,7 @@ const StudentDashboard = () => {
   const router = useRouter();
   const [firstName, setFirstName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const validateSession = async () => {
@@ -62,6 +63,14 @@ const StudentDashboard = () => {
     await signOut({ redirect: true, callbackUrl: "/auth/signin" });
   };
 
+  // Filter job data based on search query
+  const filteredJobs = jobData.filter(
+    (job) =>
+      job.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.location.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -69,7 +78,7 @@ const StudentDashboard = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <header className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-4 px-10  flex justify-between items-center shadow-lg">
+      <header className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-4 px-10 flex justify-between items-center shadow-lg">
         {/* Profile Section */}
         <div className="flex items-center space-x-4">
           <FaUserTie
@@ -79,6 +88,18 @@ const StudentDashboard = () => {
           <span className="hidden sm:inline text-lg font-semibold">
             Welcome, {firstName}
           </span>
+        </div>
+
+        {/* Search Job Section */}
+        <div className="flex items-center bg-white text-black rounded-md p-2 max-w-xs">
+          <FaSearch className="mr-2" />
+          <input
+            type="text"
+            placeholder="Search jobs"
+            className="outline-none w-full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
         {/* Sign Out Button */}
@@ -94,7 +115,7 @@ const StudentDashboard = () => {
       {/* Main Content */}
       <main className="flex-1 bg-gradient-to-b from-blue-50 to-white py-6 px-20 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {/* Job Management Section */}
-        {jobData.map((job, index) => (
+        {filteredJobs.map((job, index) => (
           <div
             key={index}
             className="bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-2xl hover:bg-gradient-to-r from-blue-100 to-indigo-100 transform hover:scale-105 transition-transform duration-300"
