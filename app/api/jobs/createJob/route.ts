@@ -13,7 +13,8 @@ export async function POST(request:NextRequest) {
             company,
             location,
             employmentType,
-            salaryRange,
+            minSalary,
+            maxSalary,
             skillsRequired,
             postedBy
         } = requestBody;
@@ -30,7 +31,8 @@ export async function POST(request:NextRequest) {
             company,
             location,
             employmentType,
-            salaryRange,
+            minSalary,
+            maxSalary,
             skillsRequired,
             postedBy
         })
