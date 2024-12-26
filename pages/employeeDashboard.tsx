@@ -1,10 +1,10 @@
 'use client'
 
 import React from "react";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { FaUserTie, FaBell, FaPlusCircle } from "react-icons/fa";
+import { FaUserTie, FaBell, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 
 // Sample data for jobs
 const jobData = [
@@ -42,15 +42,22 @@ const jobData = [
 
 const EmployeeDashboard = () => {
   const router = useRouter();
-    useEffect(() => {
-      const validateSession = async () => {
-        const session = await getSession();
-        if (!session || session?.user?.role !== "employer") {
-          router.push("/auth/signin"); 
-        }
-      };
-      validateSession();
-    }, [router]);
+
+  useEffect(() => {
+    const validateSession = async () => {
+      const session = await getSession();
+      if (!session || session?.user?.role !== "employer") {
+        router.push("/auth/signin"); 
+      }
+    };
+    validateSession();
+  }, [router]);
+
+  // Sign out handler
+  const handleSignOut = async () => {
+    await signOut({ redirect: true, callbackUrl: "/auth/signin" });
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -79,6 +86,15 @@ const EmployeeDashboard = () => {
             5
           </span>
         </div>
+
+        {/* Sign Out Button */}
+        <button 
+          onClick={handleSignOut} 
+          className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+        >
+          <FaSignOutAlt className="mr-2" />
+          Sign Out
+        </button>
       </header>
 
       {/* Main Content */}

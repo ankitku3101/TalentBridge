@@ -1,13 +1,14 @@
-'use client'
+'use client';
 
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { FaUserCircle, FaBell, FaSearch, FaBars } from "react-icons/fa";
+import { FaUserCircle, FaBell, FaSearch, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const StudentDashboard = () => {
   const router = useRouter();
+
   useEffect(() => {
     const validateSession = async () => {
       const session = await getSession();
@@ -17,6 +18,11 @@ const StudentDashboard = () => {
     };
     validateSession();
   }, [router]);
+
+  // Sign out handler
+  const handleSignOut = async () => {
+    await signOut({ redirect: true, callbackUrl: "/auth/signin" });
+  };
 
   return (
     <div className="flex flex-col min-h-screen p-0">
@@ -37,6 +43,14 @@ const StudentDashboard = () => {
         <div className="flex items-center space-x-4">
           <FaUserCircle size={28} />
           <FaBell size={28} />
+          {/* Sign Out Button */}
+          <button 
+            onClick={handleSignOut} 
+            className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+          >
+            <FaSignOutAlt className="mr-2" />
+            Sign Out
+          </button>
         </div>
       </header>
 
