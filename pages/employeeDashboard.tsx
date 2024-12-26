@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -41,6 +41,7 @@ const jobData = [
 ];
 
 const EmployeeDashboard = () => {
+  const [firstName, setFirstName] = useState(""); // State to store the first name
   const router = useRouter();
 
   useEffect(() => {
