@@ -44,7 +44,7 @@ const CreateJobPage = () => {
 
       if (response.ok) {
         alert("Job created successfully!");
-        router.push("/dashboard"); // Redirect to the dashboard after job is created
+        router.push("employee/dashboard"); // Redirect to the dashboard after job is created
       } else {
         setError(data.error || "Something went wrong");
       }

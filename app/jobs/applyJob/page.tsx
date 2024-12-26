@@ -1,12 +1,11 @@
-// "use client" directive to make this a Client Component
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Updated import for Next.js 13+ with App Directory
+import { useRouter } from 'next/navigation'; 
 import { FaArrowLeft } from 'react-icons/fa';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Define Job and Student types based on your schema
+// Define Job and Student types based on  schema
 interface Job {
   _id: string;
   title: string;
