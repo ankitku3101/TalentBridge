@@ -25,11 +25,19 @@ const jobSchema = new mongoose.Schema(
     },
     minSalary:{
       type:Number,
-      default:[0,"Can't be In negative"]
+      default:0,
+      validate: {
+        validator: (value: number) => value >= 0,
+        message: "minSalary can't be negative"
+      }
     },
     maxSalary:{
       type:Number,
-      default:[0,"Can't be In negative"]
+      default:0,
+      validate: {
+        validator: (value: number) => value >= 0,
+        message: "minSalary can't be negative"
+      }
     },
     skillsRequired: [String], 
     postedBy: { 
