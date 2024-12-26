@@ -41,6 +41,7 @@ const jobData = [
 ];
 
 const EmployeeDashboard = () => {
+  const [firstName, setFirstName] = useState(""); // State to store the first name
   const router = useRouter();
 
   useEffect(() => {
