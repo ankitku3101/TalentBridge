@@ -2,19 +2,29 @@
 
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle, FaBell, FaSearch, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const StudentDashboard = () => {
   const router = useRouter();
+  const [userFirstName, setUserFirstName] = useState<string | null>(null); // state to store first name
+  const [loading, setLoading] = useState(true); // state to manage loading state
 
   useEffect(() => {
     const validateSession = async () => {
       const session = await getSession();
       if (!session || session?.user?.role !== "student") {
-        router.push("/auth/signin"); 
+        router.push("/auth/signin");
+      } else {
+        // Log the session to inspect its structure
+        console.log("Session Data:", session);
+        
+        // Safe access to firstName and check if it exists
+        const firstName = session?.user?.name || null;  // Use `name` instead of `firstName` if needed
+        setUserFirstName(firstName);
       }
+      setLoading(false); // Set loading to false after session is checked
     };
     validateSession();
   }, [router]);
@@ -24,13 +34,19 @@ const StudentDashboard = () => {
     await signOut({ redirect: true, callbackUrl: "/auth/signin" });
   };
 
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading state until session is validated
+  }
+
   return (
     <div className="flex flex-col min-h-screen p-0">
       {/* Dashboard Header */}
       <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <FaBars size={28} className="text-white cursor-pointer" />
-          <h1 className="text-2xl font-bold text-white">Student Dashboard</h1>
+          <h1 className="text-2xl font-bold text-white">
+            {userFirstName ? `${userFirstName}'s Dashboard` : 'Student Dashboard'}
+          </h1>
         </div>
         <div className="flex items-center bg-white text-black rounded-md p-2 max-w-sm mx-4">
           <FaSearch className="mr-2" />
@@ -44,8 +60,8 @@ const StudentDashboard = () => {
           <FaUserCircle size={28} />
           <FaBell size={28} />
           {/* Sign Out Button */}
-          <button 
-            onClick={handleSignOut} 
+          <button
+            onClick={handleSignOut}
             className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
           >
             <FaSignOutAlt className="mr-2" />
