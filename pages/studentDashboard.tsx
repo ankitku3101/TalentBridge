@@ -3,13 +3,46 @@
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaUserCircle, FaBell, FaSearch, FaBars, FaSignOutAlt } from "react-icons/fa";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { FaUserTie, FaSignOutAlt } from "react-icons/fa";
+
+// Sample data for job postings
+const jobData = [
+  {
+    jobTitle: "Software Engineer Intern",
+    company: "Tech Innovators",
+    location: "San Francisco, CA",
+  },
+  {
+    jobTitle: "Marketing Assistant",
+    company: "Brand Boosters",
+    location: "New York, NY",
+  },
+  {
+    jobTitle: "Junior Data Analyst",
+    company: "Data Labs",
+    location: "Austin, TX",
+  },
+  {
+    jobTitle: "Design Intern",
+    company: "Creative Solutions",
+    location: "Chicago, IL",
+  },
+  {
+    jobTitle: "Content Writer",
+    company: "Future Enterprises",
+    location: "Seattle, WA",
+  },
+  {
+    jobTitle: "Operations Coordinator",
+    company: "Cloud Systems",
+    location: "Los Angeles, CA",
+  },
+];
 
 const StudentDashboard = () => {
   const router = useRouter();
-  const [userFirstName, setUserFirstName] = useState<string | null>(null); // state to store first name
-  const [loading, setLoading] = useState(true); // state to manage loading state
+  const [firstName, setFirstName] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const validateSession = async () => {
@@ -17,14 +50,9 @@ const StudentDashboard = () => {
       if (!session || session?.user?.role !== "student") {
         router.push("/auth/signin");
       } else {
-        // Log the session to inspect its structure
-        console.log("Session Data:", session);
-        
-        // Safe access to firstName and check if it exists
-        const firstName = session?.user?.name || null;  // Use `name` instead of `firstName` if needed
-        setUserFirstName(firstName);
+        setFirstName(session?.user?.name || "Student");
       }
-      setLoading(false); // Set loading to false after session is checked
+      setLoading(false);
     };
     validateSession();
   }, [router]);
@@ -35,67 +63,65 @@ const StudentDashboard = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading state until session is validated
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col min-h-screen p-0">
-      {/* Dashboard Header */}
-      <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <header className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-4 px-10  flex justify-between items-center shadow-lg">
+        {/* Profile Section */}
         <div className="flex items-center space-x-4">
-          <FaBars size={28} className="text-white cursor-pointer" />
-          <h1 className="text-2xl font-bold text-white">
-            {userFirstName ? `${userFirstName}'s Dashboard` : 'Student Dashboard'}
-          </h1>
-        </div>
-        <div className="flex items-center bg-white text-black rounded-md p-2 max-w-sm mx-4">
-          <FaSearch className="mr-2" />
-          <input
-            type="text"
-            placeholder="Search jobs"
-            className="outline-none w-full"
+          <FaUserTie
+            size={28}
+            className="hover:scale-125 hover:text-yellow-300 transition-transform duration-300"
           />
+          <span className="hidden sm:inline text-lg font-semibold">
+            Welcome, {firstName}
+          </span>
         </div>
-        <div className="flex items-center space-x-4">
-          <FaUserCircle size={28} />
-          <FaBell size={28} />
-          {/* Sign Out Button */}
-          <button
-            onClick={handleSignOut}
-            className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
-          >
-            <FaSignOutAlt className="mr-2" />
-            Sign Out
-          </button>
-        </div>
+
+        {/* Sign Out Button */}
+        <button
+          onClick={handleSignOut}
+          className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+        >
+          <FaSignOutAlt className="mr-2" />
+          Sign Out
+        </button>
       </header>
 
-      {/* Dashboard Body */}
-      <main className="flex-1 bg-gray-100 p-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {[...Array(6)].map((_, index) => (
-          <Card
+      {/* Main Content */}
+      <main className="flex-1 bg-gradient-to-b from-blue-50 to-white py-6 px-20 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {/* Job Management Section */}
+        {jobData.map((job, index) => (
+          <div
             key={index}
-            className="shadow-md rounded-lg hover:shadow-xl hover:shadow-blue-500 transition-all duration-300"
+            className="bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-2xl hover:bg-gradient-to-r from-blue-100 to-indigo-100 transform hover:scale-105 transition-transform duration-300"
           >
-            <CardHeader>
-              <CardTitle>Job Title {index + 1}</CardTitle>
-              <p className="text-gray-700 text-sm">Company Name</p>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 text-sm mb-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                feugiat libero eget felis vulputate, at tincidunt ante scelerisque.
-              </p>
-            </CardContent>
-            <CardFooter className="flex justify-between items-center">
-              <p className="text-gray-500 text-xs">Location: City, Country</p>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+            <h3 className="font-semibold text-xl mb-2 text-indigo-600 hover:text-blue-700">
+              {job.jobTitle}
+            </h3>
+            <p className="text-gray-700 font-medium">{job.company}</p>
+            <p className="text-gray-600 mb-4">{job.location}</p>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-500">
+                Posted: {Math.floor(Math.random() * 10) + 1} days ago
+              </span>
+              <button className="text-white bg-indigo-600 hover:bg-blue-600 px-4 py-2 rounded-md text-sm transition duration-200 shadow hover:shadow-md">
                 Apply
               </button>
-            </CardFooter>
-          </Card>
+            </div>
+          </div>
         ))}
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-gray-700 to-gray-900 text-white py-4">
+        <div className="max-w-7xl mx-auto px-4 text-center text-sm">
+          © {new Date().getFullYear()} Talent Bridge. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 };

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { FaUserTie, FaBell, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaUserTie, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 
 // Sample data for jobs
 const jobData = [
@@ -64,7 +64,7 @@ const EmployeeDashboard = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <header className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white p-4 flex justify-between items-center shadow-lg">
+      <header className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-4 px-10 flex justify-between items-center shadow-lg">
         {/* Profile Section */}
         <div className="flex items-center space-x-4">
           <FaUserTie
@@ -82,17 +82,9 @@ const EmployeeDashboard = () => {
           <span className="text-sm font-medium">Post Job</span>
         </button>
 
-        {/* Notification Icon */}
-        <div className="relative hover:text-yellow-300 hover:scale-125 transition-transform duration-300">
-          <FaBell size={28} />
-          <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-            5
-          </span>
-        </div>
-
         {/* Sign Out Button */}
-        <button 
-          onClick={handleSignOut} 
+        <button
+          onClick={handleSignOut}
           className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
         >
           <FaSignOutAlt className="mr-2" />
@@ -101,12 +93,12 @@ const EmployeeDashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 bg-gradient-to-b from-blue-50 to-white p-6 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <main className="flex-1 bg-gradient-to-b from-blue-50 to-white py-6 px-20 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {/* Job Management Section */}
         {jobData.map((job, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-lg p-6 hover:shadow-2xl hover:bg-gradient-to-r from-blue-100 to-indigo-100 transform hover:scale-105 transition-transform duration-300"
+            className="bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-2xl hover:bg-gradient-to-r from-blue-100 to-indigo-100 transform hover:scale-105 transition-transform duration-300"
           >
             <h3 className="font-semibold text-xl mb-2 text-indigo-600 hover:text-blue-700">
               {job.jobTitle}
