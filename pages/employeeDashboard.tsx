@@ -1,9 +1,8 @@
-'use client'
+'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect,useState } from "react";
 import { FaUserTie, FaBell, FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 
 // Sample data for jobs
@@ -19,7 +18,7 @@ const jobData = [
     location: "New York, NY",
   },
   {
-    jobTitle: "UX/UI Designer",
+    jobTitle: "UI/UX Designer",
     company: "Creative Solutions",
     location: "Austin, TX",
   },
@@ -48,7 +47,10 @@ const EmployeeDashboard = () => {
     const validateSession = async () => {
       const session = await getSession();
       if (!session || session?.user?.role !== "employer") {
-        router.push("/auth/signin"); 
+        router.push("/auth/signin");
+      } else {
+        // Set the first name from the session data (assuming it's stored as session.user.name)
+        setFirstName(session?.user?.name || "Employer");
       }
     };
     validateSession();
@@ -70,7 +72,7 @@ const EmployeeDashboard = () => {
             className="hover:scale-125 hover:text-yellow-300 transition-transform duration-300"
           />
           <span className="hidden sm:inline text-lg font-semibold">
-            Welcome, Employer
+            Welcome, {firstName} {/* Display the first name here */}
           </span>
         </div>
 
