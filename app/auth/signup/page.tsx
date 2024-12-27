@@ -57,16 +57,13 @@ const SignupPage = () => {
 
       const payload = {
         ...formData,
-        role: userType.toLowerCase(), 
+        role: userType.toLowerCase(),
         age: formData.age ? parseInt(formData.age) : undefined,
         graduationYear: formData.graduationYear ? parseInt(formData.graduationYear) : undefined,
         skills: formData.skills ? formData.skills.split(',') : [],
         hiringFor: formData.hiringFor ? formData.hiringFor.split(',') : [],
-        phone: userType === 'Employer' ? formData.contactNumber : formData.phone, 
-    };    
-
-      console.log(payload);
-      
+        phone: userType === 'Employer' ? formData.contactNumber : formData.phone,
+      };
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -92,18 +89,18 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md -mt-12"  // Added negative margin-top to move the card upwards
       >
-        <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
+        <h2 className="text-3xl font-semibold mb-6 text-center">Sign Up</h2>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">User Type</label>
           <select
             value={userType}
             onChange={handleUserTypeChange}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded-lg"
           >
             <option value="Student">Student</option>
             <option value="Employer">Employer</option>
@@ -117,7 +114,7 @@ const SignupPage = () => {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded-lg"
           />
           <input
             type="email"
@@ -126,7 +123,7 @@ const SignupPage = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded-lg"
           />
 
           {userType === 'Student' && (
@@ -138,7 +135,7 @@ const SignupPage = () => {
                 value={formData.age}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -147,7 +144,7 @@ const SignupPage = () => {
                 value={formData.rollNumber}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -156,7 +153,7 @@ const SignupPage = () => {
                 value={formData.degree}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="number"
@@ -165,7 +162,7 @@ const SignupPage = () => {
                 value={formData.graduationYear}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -174,7 +171,7 @@ const SignupPage = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -182,7 +179,7 @@ const SignupPage = () => {
                 placeholder="Skills (comma-separated)"
                 value={formData.skills}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
             </>
           )}
@@ -196,7 +193,7 @@ const SignupPage = () => {
                 value={formData.company}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -204,7 +201,7 @@ const SignupPage = () => {
                 placeholder="Position"
                 value={formData.position}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -212,7 +209,7 @@ const SignupPage = () => {
                 placeholder="Hiring For (comma-separated)"
                 value={formData.hiringFor}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
               <input
                 type="text"
@@ -220,7 +217,7 @@ const SignupPage = () => {
                 placeholder="Contact Number"
                 value={formData.contactNumber}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded-lg"
               />
             </>
           )}
@@ -232,16 +229,28 @@ const SignupPage = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded-lg"
           />
         </div>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-500 text-white py-2 mt-4 rounded hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white py-2 mt-6 rounded-lg hover:bg-blue-600"
         >
           {isSubmitting ? 'Submitting...' : 'Sign Up'}
         </button>
+        <div className="text-center mt-6">
+          <p className="text-sm">
+            Already have an account?{' '}
+            <button
+              type="button"
+              onClick={() => router.push('/auth/signin')}
+              className="text-blue-600 hover:underline"
+            >
+              Sign In
+            </button>
+          </p>
+        </div>
       </form>
     </div>
   );

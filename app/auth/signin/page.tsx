@@ -1,87 +1,108 @@
-"use client";
+'use client';
 
-import { signIn, getSession } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
-export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+const SigninPage = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
-      username: email,
-      password,
-      redirect: false, 
-    });
+    setIsSubmitting(true);
 
-    if (result?.error) {
-      setError("Invalid email or password");
-    } else {
-      setError("");
-      const session = await getSession(); 
-      console.log("Session after sign-in...:", session);
-      
-      const id = session?.user?.id
-      console.log("ID: ",id);       
+    try {
+      const response = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-      const role = session?.user?.role; 
-      console.log(role);
-      
-      if (role === "student") {
-        router.push("/student/dashboard");
-      } else if (role === "employer") {
-        router.push("/employee/dashboard");
-      } else {
-        router.push("/");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const errorMessage = errorData?.error || 'Invalid credentials';
+        throw new Error(errorMessage);
       }
+
+      const data = await response.json();
+      toast.success(data.message || 'Signin successful!');
+      router.push('/dashboard'); // Redirect to dashboard after successful signin
+    } catch (error: any) {
+      console.error('Signin error:', error.message);
+      toast.error(error.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg"
+        className="bg-white p-6 rounded shadow-md w-full max-w-md"
       >
-        <h1 className="text-2xl font-semibold text-center mb-6">Sign In</h1>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1" htmlFor="email">
-            Email
-          </label>
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
+        <div className="space-y-4">
           <input
-            id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
             required
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-1" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-2 border rounded"
-            required
           />
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-500 hover:text-gray-700 focus:outline-none"
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+          </div>
         </div>
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
+          disabled={isSubmitting}
+          className="w-full bg-blue-500 text-white py-2 mt-4 rounded hover:bg-blue-600"
         >
-          Sign In
+          {isSubmitting ? 'Signing In...' : 'Sign In'}
         </button>
+        <div className="text-center mt-4">
+          <p className="text-sm">
+            Don't have an account?{' '}
+            <button
+              type="button"
+              onClick={() => router.push('/auth/signup')}
+              className="text-blue-600 hover:underline"
+            >
+              Sign Up
+            </button>
+          </p>
+        </div>
       </form>
     </div>
   );
-}
+};
+
+export default SigninPage;
