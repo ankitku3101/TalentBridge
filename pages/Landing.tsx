@@ -52,7 +52,7 @@ const LandingPage = () => {
             Why Choose Talent Bridge?
           </h2>
           <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-            {/* Feature 1 */}
+            
             <div className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-2xl hover:bg-blue-100 transform hover:scale-105 transition duration-300">
               <div className="animate-bounce">
                 <FaGraduationCap size={48} className="text-blue-600 mx-auto mb-4" />
@@ -62,7 +62,7 @@ const LandingPage = () => {
                 Access personalized job recommendations, enhance your skills, and launch your dream career.
               </p>
             </div>
-            {/* Feature 2 */}
+            
             <div className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-2xl hover:bg-blue-100 transform hover:scale-105 transition duration-300">
               <div className="animate-bounce">
                 <FaBriefcase size={48} className="text-blue-600 mx-auto mb-4" />
@@ -72,7 +72,7 @@ const LandingPage = () => {
                 Discover top talent, post job opportunities, and grow your team with the right skills.
               </p>
             </div>
-            {/* Feature 3 */}
+            
             <div className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-2xl hover:bg-blue-100 transform hover:scale-105 transition duration-300">
               <div className="animate-bounce">
                 <FaUsers size={48} className="text-blue-600 mx-auto mb-4" />

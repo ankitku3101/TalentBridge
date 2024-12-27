@@ -40,7 +40,7 @@ const jobData = [
 ];
 
 const EmployeeDashboard = () => {
-  const [firstName, setFirstName] = useState(""); // State to store the first name
+  const [firstName, setFirstName] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -49,7 +49,6 @@ const EmployeeDashboard = () => {
       if (!session || session?.user?.role !== "employer") {
         router.push("/auth/signin");
       } else {
-        // Set the first name from the session data (assuming it's stored as session.user.name)
         setFirstName(session?.user?.name || "Employer");
       }
     };
@@ -72,7 +71,7 @@ const EmployeeDashboard = () => {
             className="hover:scale-125 hover:text-yellow-300 transition-transform duration-300"
           />
           <span className="hidden sm:inline text-lg font-semibold">
-            Welcome, {firstName} {/* Display the first name here */}
+            Welcome, {firstName}
           </span>
         </div>
 
