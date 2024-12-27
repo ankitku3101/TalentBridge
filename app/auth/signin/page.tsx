@@ -96,7 +96,7 @@ const SigninPage = () => {
               onClick={() => router.push('/auth/signup')}
               className="text-blue-600 hover:underline"
             >
-              Sign U
+              Sign Up
             </button>
           </p>
         </div>
