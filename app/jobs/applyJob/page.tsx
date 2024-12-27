@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Define Job and Student types based on  schema
+
 interface Job {
   _id: string;
   title: string;
@@ -58,7 +58,7 @@ const ApplyJobPage = () => {
 
       if (res.ok) {
         setIsSubmitted(true);
-        // Redirect to student dashboard after successful submission
+        
         router.push('/student/dashboard');
       } else {
         console.error('Failed to submit the application');
