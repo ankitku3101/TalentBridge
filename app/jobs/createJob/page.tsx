@@ -18,7 +18,9 @@ const CreateJobPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -36,7 +38,6 @@ const CreateJobPage = () => {
         body: JSON.stringify({
           ...formData,
           skillsRequired: formData.skillsRequired.split(",").map((skill) => skill.trim()),
-          postedBy: "exampleEmployerId", // Replace with actual employer ID
         }),
       });
 
@@ -44,7 +45,7 @@ const CreateJobPage = () => {
 
       if (response.ok) {
         alert("Job created successfully!");
-        router.push("employee/dashboard"); 
+        router.push("/employer/dashboard");
       } else {
         setError(data.error || "Something went wrong");
       }
