@@ -1,8 +1,10 @@
 import Job from "@/models/Job";
 import { NextRequest,NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
+import Employer from "@/models/Employer";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
-await connectMongo();
 
 interface Params{
     params:{id : String};
@@ -10,6 +12,16 @@ interface Params{
 
 export async function DELETE(request: NextRequest,{ params }:Params){
     try {
+        await connectMongo();
+
+        const session = await getServerSession(authOptions);
+        const userId = session?.user.id;
+
+        const employerPresence = await Employer.findById(userId);
+        if(!employerPresence){
+            return NextResponse.json({error:"Unauthorized request"},{status:403});
+        }
+
         const { id } = await params;
 
         if(!id){
