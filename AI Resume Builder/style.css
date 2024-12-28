@@ -1,0 +1,135 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #057ddf;
+  margin: 0;
+  padding: 0;
+}
+
+#tagline {
+  font-size: 28px; 
+  font-weight: bold; 
+  text-align: center; 
+  color: #000000; 
+  margin: 20px 0; 
+  font-family: 'Arial', sans-serif;
+  text-transform: uppercase; 
+  line-height: 1.4; 
+  padding: 10px; 
+  background: linear-gradient(45deg, #00c6ff, #0072ff); 
+}
+
+#tagline:hover {
+  color: #fff;
+  cursor: pointer; 
+}
+
+
+.logo {
+  background-color: #d8ebf3;
+  color: #06374b;
+  font-size: 2rem;
+  padding: 4px 20px;
+  border-radius: 80px;
+  border: 5px dashed #1388b6;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0px 4px 6px rgba(53, 52, 52, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+h1, h3 {
+  text-align: center;
+  color: #343a40;
+}
+
+button {
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px 5px 0 0;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-step {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.form-step.active {
+  display: block;
+  opacity: 1;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.is-invalid {
+  border: 1px solid red;
+}
+
+.is-invalid::placeholder {
+  color: red;
+}
+
+.is-valid {
+  border: 1px solid green;
+}
+
+textarea {
+  resize: vertical;
+}
+
+#profilePreview {
+  border: 2px solid #007bff;
+  margin-top: 10px;
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 80%;
+  }
+}
