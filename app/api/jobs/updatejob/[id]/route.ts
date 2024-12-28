@@ -1,6 +1,9 @@
 import Job from "@/models/Job";
+import Employer from "@/models/Employer";
 import { NextRequest,NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 
 await connectMongo();
 
@@ -10,6 +13,15 @@ interface Params{
 
 export async function PATCH(request: NextRequest,{ params }:Params){
     try {
+
+        const session = await getServerSession(authOptions);
+        const userId = session?.user.id;
+                    
+        const employerPresence = await Employer.findById(userId);
+        if(!employerPresence){
+            return NextResponse.json({error:"Unauthorized request"},{status:403});
+        }
+        
         const { id } = await params;
         const requestBody = await request.json();
         const {
