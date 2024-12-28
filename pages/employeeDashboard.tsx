@@ -79,7 +79,7 @@ const EmployeeDashboard = () => {
         <button className="flex items-center bg-yellow-300 text-indigo-800 px-4 py-2 rounded-md shadow-lg hover:bg-yellow-400 hover:shadow-xl transition duration-300">
           <FaPlusCircle className="mr-2 hover:scale-150 transition-transform duration-300" />
           <span className="text-sm font-medium">Post Job</span>
-        </button>
+        </button >
 
         {/* Sign Out Button */}
         <button
