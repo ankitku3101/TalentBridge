@@ -30,14 +30,20 @@ const CreateJobPage = () => {
     setError("");
 
     try {
-      const response = await fetch("/api/jobs", {
+      // Ensure skillsRequired is an array of strings
+      const skillsArray = formData.skillsRequired
+        .split(",")
+        .map((skill) => skill.trim())
+        .filter(Boolean); // Remove any empty strings
+
+      const response = await fetch("/api/jobs/createJob", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formData,
-          skillsRequired: formData.skillsRequired.split(",").map((skill) => skill.trim()),
+          skillsRequired: skillsArray,
         }),
       });
 
