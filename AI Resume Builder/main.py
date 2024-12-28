@@ -4,14 +4,22 @@ import uvicorn
 from dotenv import load_dotenv
 from openai import OpenAI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 
 load_dotenv()
 
 app = FastAPI()
+
+allowed_origins = [
+    "http://localhost:5500",
+    "http://localhost:5501", # Fallback condition in case port 5500 is busy for live server
+    "http://localhost",
+    "http://127.0.0.1",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500"],  # Your frontend origin
+    allow_origins=allowed_origins,  # frontend origins
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
@@ -20,8 +28,13 @@ openai = OpenAI(
     api_key = os.environ.get("API_KEY")
 )
 
+class Proj_desc(BaseModel):
+    project_title: str
+    skills: str
+    
+
 @app.post('/project-desc')
-async def generate_project_description(project_title, skills):
+async def generate_project_description(proj_desc : Proj_desc):
     message = [
         {
             'role':"developer",
@@ -29,7 +42,7 @@ async def generate_project_description(project_title, skills):
         },
         {
             "role":"user",
-            "content": f"Generate a project description for a project titled '{project_title}' that uses the following skills: {skills}. The description should explain the purpose, technology used, and outcomes of the project.",
+            "content": f"Generate a project description for a project titled '{proj_desc.project_title}' that uses the following skills: {proj_desc.skills}. The description should explain the purpose, technology used, and outcomes of the project.",
         },
     ]
     response = openai.chat.completions.create(
@@ -41,8 +54,12 @@ async def generate_project_description(project_title, skills):
         "data": response.choices[0].message.content.strip()
     }
 
+class Job_des(BaseModel):
+    job_title: str
+    company_name: str
+
 @app.post('/job-desc')
-async def generate_job_description(job_title, company_name):
+async def generate_job_description(job_des: Job_des):
     message = [
         {
             'role':"developer",
@@ -50,7 +67,7 @@ async def generate_job_description(job_title, company_name):
         },
         {
             "role":"user",
-            "content": f"Generate a job description to be included in a resume for the role of {job_title} at {company_name}. The description should highlight the user's key responsibilities, significant achievements, technologies worked on, and their overall contribution to the company's success."
+            "content": f"Generate a job description to be included in a resume for the role of {job_des.job_title} at {job_des.company_name}. The description should highlight the user's key responsibilities, significant achievements, technologies worked on, and their overall contribution to the company's success."
         },
     ]
     response = openai.chat.completions.create(
@@ -62,8 +79,12 @@ async def generate_job_description(job_title, company_name):
         "data": response.choices[0].message.content.strip()
     }
 
+class Career_obj(BaseModel):
+    skills: str
+    past_experience: str
+
 @app.post('/career-obj')
-async def generate_career_objective(skills: str, past_experience: str):
+async def generate_career_objective(career_obj: Career_obj):
     message = [
         {
             'role':"developer",
@@ -71,7 +92,7 @@ async def generate_career_objective(skills: str, past_experience: str):
         },
         {
             "role":"user",
-            "content": f"Generate a career objective for a candidate with the following skills: {skills} and past experience in {past_experience}. The objective should highlight the candidate's aspirations, strengths, and how they plan to contribute to a future role.",
+            "content": f"Generate a career objective for a candidate with the following skills: {career_obj.skills} and past experience in {career_obj.past_experience}. The objective should highlight the candidate's aspirations, strengths, and how they plan to contribute to a future role.",
         },
     ]
     response = openai.chat.completions.create(
@@ -85,4 +106,4 @@ async def generate_career_objective(skills: str, past_experience: str):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)

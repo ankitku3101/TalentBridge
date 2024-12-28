@@ -13,28 +13,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   initDynamicEntries();
 
-  document.getElementById("project_title").addEventListener("blur", async function () {
-      const projectTitle = this.value;
+  document.getElementById("project_description").addEventListener('click', async function () {
+      const projectTitle = document.getElementById('project_title').value;
       const skills = document.getElementById("skills").value;
 
       if (projectTitle && skills) {
-        const response = await fetch("http://0.0.0.0:8080/project-desc", {
+        const response = await fetch("http://127.0.0.1:8080/project-desc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ project_title: projectTitle, skills }),
+          body: JSON.stringify({
+            project_title: projectTitle, 
+            skills: skills
+          }),
         });
-        console.log(response);
+
         const data = await response.json();
-        document.getElementById("project_description").value = data.data;
+        this.value = data.data;
       }
     });
 
-  document.getElementById("job_title").addEventListener("blur", async function () {
-      const jobTitle = this.value;
+    document.getElementById("job_description").addEventListener('click', async function () {
+      const jobTitle = document.getElementById("job_title").value;
       const companyName = document.getElementById("company_name").value;
 
       if (jobTitle && companyName) {
-        const response = await fetch("http://localhost:8080/job-desc", {
+        const response = await fetch("http://127.0.0.1:8080/job-desc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -44,19 +47,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const data = await response.json();
-        document.getElementById("job_description").value = data.data;
+        this.value = data.data;
       }
     });
 
-  document.getElementById("career_objective").addEventListener("blur", async function () {
+  document.getElementById("career_objective").addEventListener('click', async function () {
       const skills = document.getElementById("skills").value;
       const pastExperience = document.getElementById("job_description").value;
 
       if (skills && pastExperience) {
-        const response = await fetch("http://localhost:8080/career-obj", {
+        const response = await fetch("http://127.0.0.1:8080/career-obj", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ skills, past_experience: pastExperience }),
+          body: JSON.stringify({ 
+            skills: skills, 
+            past_experience: pastExperience,
+          }),
         });
 
         const data = await response.json();
