@@ -1,9 +1,11 @@
 import Application from "@/models/Application";
 import { NextRequest,NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
-import { getSession } from "next-auth/react";
 import mongoose from "mongoose";
 import Job from "@/models/Job";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
+import Student from "@/models/Student";
 
 interface Params{
     params:{id : String};
@@ -18,9 +20,12 @@ export async function POST(request:NextRequest,{params}:Params){
         if(!mongoose.Types.ObjectId.isValid(id.toString())) return NextResponse.json({message:"Invalid job ID"},{status:400});
         
         //User Id
-        // const session = await getSession();
-        // const studentId = session?.user.id;
-        const studentId = "676d61e17501110503524fc6";
+        const session = await getServerSession(authOptions);
+        const studentId = session?.user.id;
+        const Suser = await Student.findById(studentId);
+        if(!Suser){
+            return NextResponse.json({error:"Unauthorized Access"},{status:403});
+        }
         
         //student verification
         if(!mongoose.Types.ObjectId.isValid(String(studentId).toString())) return NextResponse.json({message:"Invalid student ID"},{status:400});
