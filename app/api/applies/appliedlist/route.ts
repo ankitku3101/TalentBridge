@@ -2,12 +2,20 @@ import mongoose from "mongoose";
 import Application from "@/models/Application";
 import { NextRequest,NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
+import Student from "@/models/Student";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 
 export async function GET(request:NextRequest){
     try{
         await connectMongo();
 
-        const studentId = "676d61e17501110503524fc6";
+        const session = await getServerSession(authOptions);
+        const studentId = session?.user.id;
+        const Suser = await Student.findById(studentId);
+        if(!Suser){
+            return NextResponse.json({error:"Unauthorized Access"},{status:403});
+        }
 
         const allJobApplied = await Application.aggregate(
             [
