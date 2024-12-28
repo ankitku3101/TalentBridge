@@ -1,36 +1,36 @@
-"use client";
+'use client';
 
-import { signIn, getSession } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { signIn, getSession } from 'next-auth/react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
+    const result = await signIn('credentials', {
       username: email,
       password,
       redirect: false, 
     });
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError('Invalid email or password');
     } else {
-      setError("");
+      setError('');
       const session = await getSession(); 
       const role = session?.user?.role; 
       
-      if (role === "student") {
-        router.push("/student/dashboard");
-      } else if (role === "employer") {
-        router.push("/employee/dashboard");
+      if (role === 'student') {
+        router.push('/student/dashboard');
+      } else if (role === 'employer') {
+        router.push('/employee/dashboard');
       } else {
-        router.push("/");
+        router.push('/');
       }
     }
   };
@@ -75,6 +75,18 @@ export default function SignIn() {
         >
           Sign In
         </button>
+        <div className="mt-4 text-center">
+          <p className="text-sm">
+            Don't have an account?{' '}
+            <button
+              type="button"
+              onClick={() => router.push('/auth/signup')}
+              className="text-blue-600 hover:underline focus:outline-none"
+            >
+              Sign Up
+            </button>
+          </p>
+        </div>
       </form>
     </div>
   );
