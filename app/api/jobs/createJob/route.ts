@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Job from "@/models/Job";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import Employer from "@/models/Employer";
 
 await connectDB();
 
@@ -21,6 +22,12 @@ export async function POST(request: NextRequest) {
         }
 
         // Check if the user is an employer
+
+        const userPresence = await Employer.findById(userId);
+        if(!userPresence){
+            return NextResponse.json({error:"Unauthorized request"},{status:403});
+        }
+
         if (userRole !== "employer") {
             return NextResponse.json(
                 { error: "Forbidden. Only employers can create jobs." },
