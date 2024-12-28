@@ -2,6 +2,9 @@ import Job from "@/models/Job";
 import { NextRequest,NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
 import mongoose from "mongoose";
+import Employer from "@/models/Employer";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 
 interface Params{
     params:{id:string};
@@ -10,6 +13,14 @@ interface Params{
 export async function GET(request:NextRequest,{params}:Params){
     try {
         await connectMongo();
+
+        const session = await getServerSession(authOptions);
+        const userId = session?.user.id;
+        
+        const employerPresence = await Employer.findById(userId);
+        if(!employerPresence){
+            return NextResponse.json({error:"Unauthorized request"},{status:403});
+        }
 
         const {id} = await params;
 
