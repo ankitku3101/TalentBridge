@@ -14,6 +14,8 @@ app = FastAPI()
 allowed_origins = [
     "http://localhost:5500",
     "http://localhost:5501", # Fallback condition in case port 5500 is busy for live server
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:5501",
     "http://localhost",
     "http://127.0.0.1",
 ]
