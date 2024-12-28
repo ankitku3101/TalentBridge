@@ -3,10 +3,21 @@ import connectMongo from "@/lib/mongodb";
 import Job from "@/models/Job";
 import Employer from "@/models/Employer";
 import mongoose from "mongoose";
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
 
 export async function GET(request: NextRequest) {
   try {
     await connectMongo();
+
+    const session = await getServerSession(authOptions);
+    const userId = session?.user.id;
+            
+    const employerPresence = await Employer.findById(userId);
+    if(!employerPresence){
+      return NextResponse.json({error:"Unauthorized request"},{status:403});
+    }
+
     if (!mongoose.models.Job) {
       mongoose.model('Job', Job.schema);
     }
