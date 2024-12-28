@@ -1,14 +1,21 @@
-from openai import OpenAI
 import os
-from pathlib import Path
-from dotenv import load_dotenv
-
 from fastapi import FastAPI
 import uvicorn 
+from dotenv import load_dotenv
+from openai import OpenAI
+from fastapi.middleware.cors import CORSMiddleware
+
 
 load_dotenv()
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5500"],  # Your frontend origin
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 openai = OpenAI(
     api_key = os.environ.get("API_KEY")
 )
@@ -43,7 +50,7 @@ async def generate_job_description(job_title, company_name):
         },
         {
             "role":"user",
-            "content": f"Generate a job description for the role of {job_title} at {company_name}. The description should include key responsibilities, skills required, and a brief overview of the company.",
+            "content": f"Generate a job description to be included in a resume for the role of {job_title} at {company_name}. The description should highlight the user's key responsibilities, significant achievements, technologies worked on, and their overall contribution to the company's success."
         },
     ]
     response = openai.chat.completions.create(
@@ -70,7 +77,7 @@ async def generate_career_objective(skills: str, past_experience: str):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 100,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
