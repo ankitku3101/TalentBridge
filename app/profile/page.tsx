@@ -2,42 +2,26 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 
 const ProfilePage = () => {
-  const [student, setStudent] = useState<any>(null); 
-  const [error, setError] = useState<string | null>(null); 
-  const { data: session, status } = useSession(); 
-  const [isClient, setIsClient] = useState(false); 
-  const [routerReady, setRouterReady] = useState(false); // Ensure router is ready
-  let router = useRouter();
-
-  // Check if the component is mounted on the client
-  useEffect(() => {
-    setIsClient(true); // This will ensure the next hook executes only on the client side
-  }, []);
+  const [student, setStudent] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-     router = useRouter();
-    if (isClient) {
-      setRouterReady(true); // Now that it's on the client side, the router can be used
-    }
-  }, [isClient]);
+    // If the session is loading, do nothing
+    if (status === 'loading') return;
 
-  useEffect(() => {
-    if (!routerReady) return; // Prevent running the router logic if the router is not ready
-
-    // If the session is not found or not loaded, redirect to the login page
-    if (status === 'loading') return; // Avoid running while loading
+    // If session is not available, redirect to the sign-in page
     if (!session) {
-      router.push('/auth/signin'); // Redirect to login page if not logged in
+      window.location.href = '/auth/signin'; // Redirect using window.location
     }
-  }, [status, session, router, routerReady]);
+  }, [session, status]);
 
   useEffect(() => {
     if (session) {
-      // Fetch the student data from the backend API when the session is available
-      fetch('/api/profile')
+      // Fetch the student data from the API
+      fetch('/api/profile') // Adjust the endpoint as needed
         .then((response) => response.json())
         .then((data) => {
           if (data.message) {
@@ -61,20 +45,21 @@ const ProfilePage = () => {
   }
 
   return (
-    <div>
-      <h1>Profile Page</h1>
-      {error && <p>{error}</p>} 
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-semibold text-center mb-6">Student Profile</h1>
+      {error && <p className="text-red-500 text-center">{error}</p>}
       {student && !error ? (
         <div>
-          <h2>{student.name}</h2>
-          <p>Roll Number: {student.rollNumber}</p>
-          <p>Degree: {student.degree}</p>
-          <p>Graduation Year: {student.graduationYear}</p>
-          <p>Email: {student.email}</p>
-          <p>Phone: {student.phone}</p>
-          <p>Age: {student.age}</p>
-          <h3>Skills</h3>
-          <ul>
+          <h2 className="text-xl font-bold mb-2">{student.name}</h2>
+          <p className="mb-2"><strong>Roll Number:</strong> {student.rollNumber}</p>
+          <p className="mb-2"><strong>Degree:</strong> {student.degree}</p>
+          <p className="mb-2"><strong>Graduation Year:</strong> {student.graduationYear}</p>
+          <p className="mb-2"><strong>Email:</strong> {student.email}</p>
+          <p className="mb-2"><strong>Phone:</strong> {student.phone}</p>
+          <p className="mb-2"><strong>Age:</strong> {student.age}</p>
+          
+          <h3 className="text-xl font-semibold mt-4">Skills</h3>
+          <ul className="list-disc pl-5">
             {student.skills?.map((skill: string, index: number) => (
               <li key={index}>{skill}</li>
             ))}
