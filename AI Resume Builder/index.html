@@ -98,9 +98,9 @@
         <div id="projectEntries">
           <div class="project-entry mb-3">
             <label for="projectTitle" class="form-label">Project Title:</label>
-            <input type="text" class="form-control" name="projectTitle[]" required />
+            <input type="text" class="form-control" name="projectTitle[]" id="project_title" required />
             <label for="projectDescription" class="form-label">Description:</label>
-            <textarea name="projectDescription[]" class="form-control"></textarea>
+            <textarea name="projectDescription[]" id="project_description" class="form-control"></textarea>
           </div>
       </div>
 
@@ -117,11 +117,11 @@
         <div class="experience-entry mb-3">
             <div class="mb-3">
             <label for="jobTitle" class="form-label">Job Title:</label>
-            <input type="text" class="form-control" name="jobTitle[]" placeholder="e.g., Software Engineer" required />
+            <input type="text" class="form-control" name="jobTitle[]" id="job_title" placeholder="e.g., Software Engineer" required />
             </div>
             <div class="mb-3">
             <label for="companyName" class="form-label">Company Name:</label>
-            <input type="text" class="form-control" name="companyName[]" placeholder="e.g., ABC Corp" required />
+            <input type="text" class="form-control" id="company_name" name="companyName[]" placeholder="e.g., ABC Corp" required />
             </div>
             <div class="mb-3">
             <label for="duration" class="form-label">Duration:</label>
@@ -129,7 +129,7 @@
             </div>
             <div class="mb-3">
             <label for="jobDescription" class="form-label">Description:</label>
-            <textarea class="form-control" name="jobDescription[]" rows="3" placeholder="Brief about your role"></textarea>
+            <textarea class="form-control" name="jobDescription[]" id="job_description" rows="3" placeholder="Brief about your role"></textarea>
             </div>
         </div>
         </div>
@@ -143,7 +143,7 @@
         <h3>Career Objective</h3>
         <div class="mb-3">
           <label for="careerObjective" class="form-label">Career Objective:</label>
-          <textarea id="careerObjective" name="careerObjective" class="form-control"></textarea>
+          <textarea id="careerObjective" id="career_objective" name="careerObjective" class="form-control"></textarea>
         </div>
         <button type="button" class="prev-step">Previous</button>
         <button type="submit" class="btn-success">Submit</button>
