@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
 
     // Construct the filter object
     const filter: any = {
+      postedBy:userId,
       title: { $regex: title, $options: 'i' },
       company: { $regex: company, $options: 'i' },
       location: { $regex: location, $options: 'i' },
