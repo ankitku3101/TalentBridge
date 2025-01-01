@@ -1,0 +1,31 @@
+{
+    "name": "Hitesh Mohanty",
+    "job_title": "v bnm",
+    "address": "36-Gopindhpur,near Odisha Adarsh Vidyalaya, Jatani gate road",
+    "phone": "07205374495",
+    "email": "mohantyhitesh4495@gmail.com",
+    "career_objective": "To secure a challenging position",
+    "education": [
+        {
+            "degree": "B.Tech in Computer Science and Engineering",
+            "institute": "GIFT Autonomous, Bhubaneswar ",
+            "year": "24"
+        }
+    ],
+    "skills": [
+        "java",
+        " C",
+        " C++",
+        " Python",
+        " HTML",
+        " SQL",
+        " CSS",
+        " JavaScript"
+    ],
+    "projects": [
+        {
+            "name": "Hospital Management System",
+            "description": "The 'Hospital Management System"
+        }
+    ]
+}
