@@ -1,37 +1,60 @@
 import Job from "@/models/Job";
-import { NextRequest,NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import connectMongo from "@/lib/mongodb";
 import Employer from "@/models/Employer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
-
-interface Params{
-    params:{id : String};
+interface Params {
+    params: { id: string };
 }
 
-export async function DELETE(request: NextRequest,{ params }:Params){
+export async function DELETE(request: NextRequest, { params }: Params) {
     try {
         await connectMongo();
 
         const session = await getServerSession(authOptions);
         const userId = session?.user.id;
 
+        // Check if the employer exists
         const employerPresence = await Employer.findById(userId);
-        if(!employerPresence){
-            return NextResponse.json({error:"Unauthorized request"},{status:403});
+        if (!employerPresence) {
+            return NextResponse.json(
+                { error: "Unauthorized request" },
+                { status: 403 }
+            );
         }
 
-        const { id } = await params;
+        const { id } = params;
 
-        if(!id){
-            return NextResponse.json({error:"ID is Required."},{status:400});
+        // Validate the ID parameter
+        if (!id) {
+            return NextResponse.json(
+                { error: "Job ID is required." },
+                { status: 400 }
+            );
         }
 
-        await Job.findByIdAndDelete({_id:id});
+        // Check if the job exists
+        const jobToDelete = await Job.findById(id);
+        if (!jobToDelete) {
+            return NextResponse.json(
+                { error: "Job not found." },
+                { status: 404 }
+            );
+        }
 
-        return NextResponse.json({message:"Job Deleted."},{status:200});
-    } catch (error) {
-        return NextResponse.json({error:error.message},{status:500});
+        // Delete the job
+        await Job.findByIdAndDelete(id);
+
+        return NextResponse.json(
+            { message: "Job deleted successfully." },
+            { status: 200 }
+        );
+    } catch (error: any) {
+        return NextResponse.json(
+            { error: error.message },
+            { status: 500 }
+        );
     }
 }
