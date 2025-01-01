@@ -13,7 +13,8 @@ type Job = {
   location: string;
   employmentType: string;
   description: string;
-  salary?: string;
+  minSalary:Number,
+  maxSalary:Number,
   requirements?: string[];
   createdAt: string;
   updatedAt: string;
@@ -180,9 +181,9 @@ const EmployerDashboard = () => {
                 <FaBriefcase className="mr-2" />
                 <span>{selectedJob.employmentType}</span>
               </div>
-              {selectedJob.salary && (
+              {true && (
                 <div className="text-green-600 font-semibold">
-                  Salary: {selectedJob.salary}
+                  Salary Range: {(selectedJob.minSalary).toString()} - {(selectedJob.maxSalary).toString()}
                 </div>
               )}
             </div>
