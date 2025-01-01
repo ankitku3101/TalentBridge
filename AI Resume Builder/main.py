@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from fastapi.responses import FileResponse
+import json
+from generate_resume import generate_resume_from_template
 
 load_dotenv()
 
@@ -50,7 +52,7 @@ async def generate_project_description(proj_desc : Proj_desc):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 50,
+        max_tokens = 5,
     )
     return {
         "data": response.choices[0].message.content.strip()
@@ -75,7 +77,7 @@ async def generate_job_description(job_des: Job_des):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 100,
+        max_tokens = 10,
     )
     return {
         "data": response.choices[0].message.content.strip()
@@ -100,11 +102,42 @@ async def generate_career_objective(career_obj: Career_obj):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 50,
+        max_tokens = 5,
     )
     return {
         "data": response.choices[0].message.content.strip()
     }
+
+class request(BaseModel):
+    name: str
+    job_title: str
+    address: str
+    phone: str
+    email: str
+    career_objective: str
+    education: list[dict]
+    skills: list[str]
+    projects: list[dict]
+
+@app.post("/generate-resume")
+async def generate_resume(request: request):
+    form_data = request.dict()
+    
+    # Save the form data as JSON for record-keeping
+    with open("user_data.json", "w") as f:
+        json.dump(form_data, f, indent=4)
+
+    # Generate the resume
+    output_file = "AI Resume Builder/Resume/generated_resume.docx"
+    generate_resume_from_template(form_data, output_file)
+
+    # Return the file download link
+    return {"download_link": f"AI Resume Builder/Resume/{output_file}"}
+
+@app.get("/download/{filename}")
+async def download_resume(filename: str):
+    file_path = f"./{filename}"
+    return FileResponse(filename, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
 
 
 if __name__ == "__main__":
