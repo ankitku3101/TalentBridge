@@ -1,9 +1,5 @@
-'use client';
-
-import React, { useEffect, useState } from "react";
-import { getSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { FaUserTie, FaPlusCircle, FaSignOutAlt, FaTimes, FaMapMarkerAlt, FaBriefcase, FaBuilding } from "react-icons/fa";
+import React from "react";
+import { FaUserTie, FaBell, FaPlusCircle } from "react-icons/fa";
 
 // Types
 type Job = {

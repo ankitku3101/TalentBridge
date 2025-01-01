@@ -51,7 +51,7 @@ const CreateJobPage = () => {
 
       if (response.ok) {
         alert("Job created successfully!");
-        router.push("/employer/dashboard");
+        router.push("/employee/dashboard");
       } else {
         setError(data.error || "Something went wrong");
       }
@@ -63,17 +63,17 @@ const CreateJobPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-50 to-blue-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md w-full"
+        className="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 max-w-xl w-full"
       >
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Create Job</h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Create Job</h2>
 
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
 
         <div className="mb-4">
-          <label htmlFor="title" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="title" className="block text-gray-700 font-semibold mb-2">
             Job Title
           </label>
           <input
@@ -82,13 +82,13 @@ const CreateJobPage = () => {
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
             Job Description
           </label>
           <textarea
@@ -97,13 +97,13 @@ const CreateJobPage = () => {
             value={formData.description}
             onChange={handleInputChange}
             rows={4}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           ></textarea>
         </div>
 
         <div className="mb-4">
-          <label htmlFor="company" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="company" className="block text-gray-700 font-semibold mb-2">
             Company
           </label>
           <input
@@ -112,13 +112,13 @@ const CreateJobPage = () => {
             name="company"
             value={formData.company}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="location" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="location" className="block text-gray-700 font-semibold mb-2">
             Location
           </label>
           <input
@@ -127,13 +127,13 @@ const CreateJobPage = () => {
             name="location"
             value={formData.location}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="employmentType" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="employmentType" className="block text-gray-700 font-semibold mb-2">
             Employment Type
           </label>
           <select
@@ -141,7 +141,7 @@ const CreateJobPage = () => {
             name="employmentType"
             value={formData.employmentType}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="Full-time">Full-time</option>
             <option value="Part-time">Part-time</option>
@@ -151,7 +151,7 @@ const CreateJobPage = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="salaryRange" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="salaryRange" className="block text-gray-700 font-semibold mb-2">
             Salary Range
           </label>
           <input
@@ -160,12 +160,12 @@ const CreateJobPage = () => {
             name="salaryRange"
             value={formData.salaryRange}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="skillsRequired" className="block text-gray-700 font-bold mb-2">
+          <label htmlFor="skillsRequired" className="block text-gray-700 font-semibold mb-2">
             Skills Required (comma separated)
           </label>
           <input
@@ -174,14 +174,14 @@ const CreateJobPage = () => {
             name="skillsRequired"
             value={formData.skillsRequired}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-md border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center mb-6">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
             disabled={loading}
           >
             {loading ? "Creating..." : "Create Job"}
