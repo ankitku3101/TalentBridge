@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import Student from "@/models/Student";
 import Job from "@/models/Job";
+import Employer from "@/models/Employer";
 import mongoose from "mongoose";
 
 export async function GET(request:NextRequest){
@@ -12,10 +13,9 @@ export async function GET(request:NextRequest){
 
         const session = await getServerSession(authOptions);
         const userId = session?.user.id;
-
-        const isExistStudent = await Student.exists({_id:userId})
-
-        if(!isExistStudent){
+        
+        const isExistsStudent = await Student.exists({_id:userId});
+        if(!isExistsStudent) {
             return NextResponse.json({message:"Unauthorized Access"},{status:403});
         }
 
@@ -23,6 +23,10 @@ export async function GET(request:NextRequest){
             mongoose.model('Job', Job.schema);
         }
         
+        if (!mongoose.models.Employer) {
+            mongoose.model('Employer', Employer.schema);
+        }
+
         const { searchParams } = new URL(request.url);
     
         const title = searchParams.get('title') || '';
