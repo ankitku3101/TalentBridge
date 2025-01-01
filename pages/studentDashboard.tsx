@@ -1,41 +1,41 @@
 'use client';
 
-import { getSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { FaUserTie, FaSignOutAlt, FaSearch } from "react-icons/fa";
+import { getSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation'; // Correct import for Next.js navigation
+import { useState, useEffect } from 'react';
+import { FaUserTie, FaSignOutAlt, FaSearch } from 'react-icons/fa';
 
 // Sample data for job postings
 const jobData = [
   {
-    jobTitle: "Software Engineer Intern",
-    company: "Tech Innovators",
-    location: "San Francisco, CA",
+    jobTitle: 'Software Engineer Intern',
+    company: 'Tech Innovators',
+    location: 'San Francisco, CA',
   },
   {
-    jobTitle: "Marketing Assistant",
-    company: "Brand Boosters",
-    location: "New York, NY",
+    jobTitle: 'Marketing Assistant',
+    company: 'Brand Boosters',
+    location: 'New York, NY',
   },
   {
-    jobTitle: "Junior Data Analyst",
-    company: "Data Labs",
-    location: "Austin, TX",
+    jobTitle: 'Junior Data Analyst',
+    company: 'Data Labs',
+    location: 'Austin, TX',
   },
   {
-    jobTitle: "Design Intern",
-    company: "Creative Solutions",
-    location: "Chicago, IL",
+    jobTitle: 'Design Intern',
+    company: 'Creative Solutions',
+    location: 'Chicago, IL',
   },
   {
-    jobTitle: "Content Writer",
-    company: "Future Enterprises",
-    location: "Seattle, WA",
+    jobTitle: 'Content Writer',
+    company: 'Future Enterprises',
+    location: 'Seattle, WA',
   },
   {
-    jobTitle: "Operations Coordinator",
-    company: "Cloud Systems",
-    location: "Los Angeles, CA",
+    jobTitle: 'Operations Coordinator',
+    company: 'Cloud Systems',
+    location: 'Los Angeles, CA',
   },
 ];
 
@@ -43,15 +43,15 @@ const StudentDashboard = () => {
   const router = useRouter();
   const [firstName, setFirstName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     const validateSession = async () => {
       const session = await getSession();
-      if (!session || session?.user?.role !== "student") {
-        router.push("/auth/signin");
+      if (!session || session?.user?.role !== 'student') {
+        router.push('/auth/signin');
       } else {
-        setFirstName(session?.user?.name || "Student");
+        setFirstName(session?.user?.name || 'Student');
       }
       setLoading(false);
     };
@@ -60,7 +60,12 @@ const StudentDashboard = () => {
 
   // Sign out handler
   const handleSignOut = async () => {
-    await signOut({ redirect: true, callbackUrl: "/auth/signin" });
+    await signOut({ redirect: true, callbackUrl: '/auth/signin' });
+  };
+
+  // Navigate to profile page
+  const handleProfileClick = () => {
+    router.push('/student/profile'); // Navigates to the profile page
   };
 
   // Filter job data based on search query
@@ -83,7 +88,8 @@ const StudentDashboard = () => {
         <div className="flex items-center space-x-4">
           <FaUserTie
             size={28}
-            className="hover:scale-125 hover:text-yellow-300 transition-transform duration-300"
+            className="hover:scale-125 hover:text-yellow-300 transition-transform duration-300 cursor-pointer"
+            onClick={handleProfileClick} // Clicking on the profile icon will navigate to the profile page
           />
           <span className="hidden sm:inline text-lg font-semibold">
             Welcome, {firstName}
