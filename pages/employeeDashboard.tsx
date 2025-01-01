@@ -105,7 +105,7 @@ const EmployerDashboard = () => {
   };
 
   const handlePostJob = () => {
-    router.push("/employer/post-job");
+    router.push("/employee/jobs/createJob");
   };
 
   // Loading Spinner Component

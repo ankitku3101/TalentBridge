@@ -51,7 +51,7 @@ const CreateJobPage = () => {
 
       if (response.ok) {
         alert("Job created successfully!");
-        router.push("/employer/dashboard");
+        router.push("/employee/dashboard");
       } else {
         setError(data.error || "Something went wrong");
       }
