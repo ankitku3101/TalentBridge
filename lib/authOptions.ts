@@ -4,8 +4,6 @@ import bcrypt from "bcryptjs";
 import Student from "@/models/Student";
 import Employer from "@/models/Employer";
 import dbConnect from "@/lib/mongodb";
-import { userAgent } from "next/server";
-
 
 export const authOptions: NextAuthOptions = {
     providers: [
