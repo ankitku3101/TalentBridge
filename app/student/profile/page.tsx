@@ -25,6 +25,9 @@ const ProfilePage = () => {
           if (data.message) {
             setError(data.message);
           } else {
+            if (data.skills && typeof data.skills === 'string') {
+              data.skills = data.skills.split(',').map((skill: string) => skill.trim());
+            }
             setStudent(data);
           }
         })
@@ -43,6 +46,13 @@ const ProfilePage = () => {
     const updatedData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(updatedData);
 
+    if (data.skills) {
+      data.skills = (data.skills as string)
+        .split(',')
+        .map((skill) => skill.trim())
+        .join(', ');
+    }
+
     const response = await fetch('/api/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -55,6 +65,11 @@ const ProfilePage = () => {
     if (result.message) {
       setError(result.message);
     } else {
+      if (result.skills && typeof result.skills === 'string') {
+        result.skills = result.skills.split(',').map((skill: string) => skill.trim());
+      } else if (Array.isArray(result.skills)) {
+        result.skills = result.skills.map((skill: string) => skill.trim());
+      }
       setStudent(result);
       setIsEditing(false);
     }
@@ -129,6 +144,18 @@ const ProfilePage = () => {
                 defaultValue={student.graduationYear}
                 name="graduationYear"
                 required
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium" htmlFor="skills">
+                Skills (comma-separated)
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="skills"
+                defaultValue={student.skills?.join(', ')}
+                name="skills"
               />
             </div>
             <button
