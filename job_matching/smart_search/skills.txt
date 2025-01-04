@@ -1,0 +1,140 @@
+python
+java
+c++
+c#
+javascript
+typescript
+go
+rust
+ruby
+swift
+kotlin
+php
+perl
+r
+matlab
+sql
+scala
+bash
+shell
+html
+css
+dart
+vba
+react
+angular
+vue
+django
+flask
+next.js
+node.js
+express
+laravel
+spring-boot
+bootstrap
+tailwindcss
+graphql
+rest api
+machine learning
+deep learning
+data science
+tensorflow
+pytorch
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+keras
+h2o
+mlops
+opencv
+nlp
+ai
+ml
+dl
+transformers
+aws
+azure
+gcp
+docker
+kubernetes
+ansible
+terraform
+jenkins
+github actions
+cloudformation
+serverless
+elastic beanstalk
+lambda functions
+mysql
+postgresql
+mongodb
+oracle
+redis
+cassandra
+couchdb
+firebase
+dynamodb
+elasticsearch
+android
+ios
+flutter
+react native
+xamarin
+swiftui
+cordova
+ionic
+hadoop
+spark
+kafka
+snowflake
+airflow
+databricks
+bigquery
+redshift
+etl
+data pipelines
+penetration testing
+vulnerability assessment
+siem
+splunk
+firewalls
+ids/ips
+forensics
+wireshark
+malware analysis
+ethical hacking
+unity
+unreal engine
+godot
+cryengine
+game design
+game physics
+3d modeling
+blender
+git
+jira
+tableau
+power bi
+excel
+sas
+stata
+salesforce
+jira
+figma
+adobe xd
+communication
+teamwork
+problem-solving
+critical thinking 
+leadership
+time management
+adaptability
+creativity 
+collaboration
+emotional intelligence
+conflict resolution 
+negotiation
+decision-making
+presentation skills

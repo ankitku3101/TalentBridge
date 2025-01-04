@@ -1,0 +1,36 @@
+{
+    "name": "Hitesh Mohanty",
+    "job_title": "intern",
+    "address": "36-Gopindhpur,near Odisha Adarsh Vidyalaya, Jatani gate road",
+    "phone": "07205374495",
+    "email": "mohantyhitesh4495@gmail.com",
+    "career_objective": "xdfcghvjb",
+    "education": [
+        {
+            "degree": "B.Tech in Computer Science and Engineering",
+            "institute": "GIFT Autonomous, Bhubaneswar ",
+            "year": "2026"
+        },
+        {
+            "degree": "Intermediate (+2)",
+            "institute": "Aska Science College, Aska",
+            "year": "2022"
+        }
+    ],
+    "skills": [
+        "java",
+        " C",
+        " C++",
+        " Python",
+        " HTML",
+        " SQL",
+        " CSS",
+        " JavaScript"
+    ],
+    "projects": [
+        {
+            "name": "AI-Driven Crop Recommendation System",
+            "description": "vbnm"
+        }
+    ]
+}

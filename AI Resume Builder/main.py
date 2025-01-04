@@ -1,4 +1,6 @@
 import os
+import sys
+from bson import ObjectId
 from fastapi import FastAPI
 import uvicorn 
 from dotenv import load_dotenv
@@ -8,8 +10,16 @@ from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import json
 from generate_resume import generate_resume_from_template
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from job_matching.student_search import StudentSearch
 
-load_dotenv()
+
+load_dotenv(".env.local")
+
+# Load environment variables
+mongodb_uri = os.getenv("MONGODB_URI")
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
 
 app = FastAPI()
 
@@ -29,7 +39,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 openai = OpenAI(
-    api_key = os.environ.get("API_KEY")
+    api_key = openai_api_key
 )
 
 class Proj_desc(BaseModel):
@@ -124,7 +134,7 @@ async def generate_resume(request: request):
     form_data = request.dict()
     
     # Save the form data as JSON for record-keeping
-    with open("user_data.json", "w") as f:
+    with open("AI Resume Builder/user_data/user_data.json", "w") as f:
         json.dump(form_data, f, indent=4)
 
     # Generate the resume
@@ -151,6 +161,26 @@ async def download_resume(filename: str):
         )
     else:
         return {"error": "File not found"}
+
+# These Endpoints are for the Job Matching 
+@app.post('/search/{query}')
+async def get_matching_percentage(query: str):
+    # Initialize search system
+    search_system = StudentSearch(mongodb_uri, openai_api_key)
+    
+    # Perform search
+    matching_students = search_system.search_students(query)
+    matching_student_id_obj = []
+    
+    for student in matching_students:
+        matching_student_id_obj.append(ObjectId(student['_id']))
+    
+    print(matching_students)
+    
+    return {
+        'matching_students': matching_students
+    }
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)

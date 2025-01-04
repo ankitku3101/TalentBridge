@@ -1,0 +1,59 @@
+AI Engineer
+AI Researcher
+Deep Learning Engineer
+Computer Vision Engineer
+Machine Learning Engineer
+Database Administrator
+Data Engineer
+Data Scientist
+Data Analyst
+NLP Engineer
+Chatbot Developer
+ML Operations Engineer
+AI Product Developer
+Software Developer
+Mobile App Developer
+Backend Developer
+Game Developer
+Embedded Systems Engineer
+Computing Engineer
+Cloud Engineer
+Solutions Architect
+DevOps Engineer
+Frontend Developer
+Full Stack Developer
+Backend Developer
+Web Application Developer
+API Developer
+Integration Engineer
+UI/UX Developer
+Web Designer
+Containerization Specialist
+Cloud Native Engineer
+Infrastructure Engineer
+Automation Engineer
+CI/CD Engineer
+Build & Release Engineer
+Search Engine Engineer
+Cache Optimization Specialist
+Cross-Platform Mobile Developer
+Big Data Engineer
+Data Pipeline Specialist
+ETL Developer
+Data Integration Engineer
+Ethical HackerCybersecurity Analyst
+Security Operations Center (SOC) Analyst
+Incident Response Specialist
+Network Security Engineer
+AR/VR Developer
+Game Designer
+Animation Artist
+Software Development Manager
+Agile Coach
+Data Visualization Specialist
+Business Intelligence Analyst
+Graphic Designer
+Developer
+Designer
+Researcher
+Manager
