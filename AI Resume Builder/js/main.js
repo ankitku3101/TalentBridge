@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
 
     const formData = {
+      img: document.getElementById("profilePicture").files[0],
       name: document.getElementById("name").value,
       job_title: document.getElementById("job_title").value,
       address: document.getElementById("location").value,

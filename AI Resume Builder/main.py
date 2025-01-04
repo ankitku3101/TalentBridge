@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, Form
 import uvicorn 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -52,7 +52,7 @@ async def generate_project_description(proj_desc : Proj_desc):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 5,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
@@ -77,7 +77,7 @@ async def generate_job_description(job_des: Job_des):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 10,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
@@ -102,30 +102,56 @@ async def generate_career_objective(career_obj: Career_obj):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 5,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
     }
 
-class request(BaseModel):
-    name: str
-    job_title: str
-    address: str
-    phone: str
-    email: str
-    career_objective: str
-    education: list[dict]
-    skills: list[str]
-    projects: list[dict]
-
 @app.post("/generate-resume")
-async def generate_resume(request: request):
-    form_data = request.dict()
-    
+async def generate_resume(
+    name: str = Form(...),
+    job_title: str = Form(...),
+    address: str = Form(...),
+    phone: str = Form(...),
+    email: str = Form(...),
+    career_objective: str = Form(...),
+    education: str = Form(...),
+    skills: str = Form(...),
+    projects: str = Form(...),
+    profile_picture: UploadFile = None,
+):
+
+    # Parse form data
+    education_data = json.loads(education)
+    skills_data = skills.split(",")
+    projects_data = json.loads(projects)
+
+    # Save the profile picture if uploaded
+    profile_picture_path = None
+    if profile_picture:
+        profile_picture_path = f"profile_pictures/{profile_picture.filename}"
+        os.makedirs("profile_pictures", exist_ok=True)
+        with open(profile_picture_path, "wb") as f:
+            f.write(await profile_picture.read())
+
+    # Create form data dictionary
+    form_data = {
+        "name": name,
+        "job_title": job_title,
+        "address": address,
+        "phone": phone,
+        "email": email,
+        "career_objective": career_objective,
+        "education": education_data,
+        "skills": skills_data,
+        "projects": projects_data,
+        "profile_picture": profile_picture_path,
+    }
+
     # Save the form data as JSON for record-keeping
     with open("user_data.json", "w") as f:
-        json.dump(form_data, f, indent=4)
+        json.dump(form_data[0:-1], f, indent=4)
 
     # Generate the resume
     output_file = "AI Resume Builder/Resume/generated_resume.docx"
@@ -137,8 +163,7 @@ async def generate_resume(request: request):
 @app.get("/download/{filename}")
 async def download_resume(filename: str):
     file_path = f"./{filename}"
-    return FileResponse(filename, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
-
+    return FileResponse(file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)
