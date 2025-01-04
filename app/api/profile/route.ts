@@ -19,7 +19,8 @@ export async function GET(request: Request) {
 
     let profile;
     if (userRole === "student") {
-      profile = await Student.findById(userId);
+      profile = await Student.findById(userId).populate('skills',"skillname -_id");
+      console.log(profile);
     } else if (userRole === "employer") {
       profile = await Employer.findById(userId);
     } else {
