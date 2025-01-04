@@ -33,7 +33,13 @@ const studentSchema = new mongoose.Schema(
       required: true, 
       unique: true 
     },
-    skills: [String], 
+    skills: [
+      {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Skills',
+        required:true
+      }
+    ], 
     phone: { 
       type: String, 
       required: true, 
