@@ -2,6 +2,7 @@ import { authOptions } from "@/lib/authOptions";
 import connectMongo from "@/lib/mongodb";
 import Employer from "@/models/Employer";
 import Job from "@/models/Job";
+import Student from "@/models/Student";
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -18,24 +19,18 @@ export async function GET(request: NextRequest,{params}:Params){
 
         const session = await getServerSession(authOptions);
         const userId = session?.user.id;
-        const doesUserExists = await Employer.exists({_id:userId});
-        if(!doesUserExists){
+        const doesUserExistsInEmploye = await Employer.exists({_id:userId});
+        const doesUserExistsInStudent = await Student.exists({_id:userId});
+        if(!(doesUserExistsInEmploye||doesUserExistsInStudent)){
             return NextResponse.json({error:"Unauthorized Access"},{status:403});
         }
 
-        
         await connectMongo();
         
         //Job Id
         const {id} = params;
         if(!mongoose.Types.ObjectId.isValid(id.toString())){
             return NextResponse.json({error:"Invalid ID"},{status:403});
-        }
-
-        //Belongs to correct User?
-        const isBelongToCorrectUser = await Job.find({_id:id,postedBy:userId})
-        if(!isBelongToCorrectUser){
-            return NextResponse.json({error:"Unauthorized request"},{status:403});
         }
         
         const JobData = await Job.findById(id);
