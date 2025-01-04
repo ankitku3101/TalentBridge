@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       position,
       hiringFor,
       contactNumber,
-      YOE
+      yoe
     } = body;
 
     if (!name || !email || !password || !phone) {
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
         skills: skills || [],
         phone,
         role: 'student',
-        YOE
+        yoe
       });
 
       return NextResponse.json({ message: 'Student created successfully', user: newStudent }, { status: 201 });
