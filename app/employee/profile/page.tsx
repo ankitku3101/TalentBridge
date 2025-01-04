@@ -28,7 +28,7 @@ const EmployerProfilePage = () => {
             setEmployee(data);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setError('Failed to load profile data');
         });
     }
@@ -69,79 +69,108 @@ const EmployerProfilePage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-semibold text-center mb-6">Employer Profile</h1>
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      {isEditing ? (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="block mb-2" htmlFor="name">Name</label>
-            <input
-              className="w-full p-2 mb-4 border"
-              type="text"
-              id="name"
-              defaultValue={employee.name}
-              name="name"
-              required
-            />
-          </div>
-          <div>
-            <label className="block mb-2" htmlFor="company">Company</label>
-            <input
-              className="w-full p-2 mb-4 border"
-              type="text"
-              id="company"
-              defaultValue={employee.company}
-              name="company"
-              required
-            />
-          </div>
-          <div>
-            <label className="block mb-2" htmlFor="position">Position</label>
-            <input
-              className="w-full p-2 mb-4 border"
-              type="text"
-              id="position"
-              defaultValue={employee.position || ''}
-              name="position"
-            />
-          </div>
-          <div>
-            <label className="block mb-2" htmlFor="contactNumber">Contact Number</label>
-            <input
-              className="w-full p-2 mb-4 border"
-              type="text"
-              id="contactNumber"
-              defaultValue={employee.contactNumber || ''}
-              name="contactNumber"
-            />
-          </div>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-            Save Changes
-          </button>
-        </form>
-      ) : (
-        <div>
-          <h2 className="text-xl font-bold mb-2">{employee.name}</h2>
-          <p className="mb-2"><strong>Company:</strong> {employee.company}</p>
-          <p className="mb-2"><strong>Email:</strong> {employee.email}</p>
-          <p className="mb-2"><strong>Position:</strong> {employee.position || 'N/A'}</p>
-          <p className="mb-2"><strong>Contact Number:</strong> {employee.contactNumber || 'N/A'}</p>
-          <h3 className="text-xl font-semibold mt-4">Hiring For</h3>
-          <ul className="list-disc pl-5">
-            {employee.hiringFor?.map((role: string, index: number) => (
-              <li key={index}>{role}</li>
-            )) || <li>No hiring roles specified</li>}
-          </ul>
+    <div className="max-w-4xl mx-auto p-6">
+      <header className="text-center bg-gradient-to-r from-blue-500 to bg-purple-500 text-white py-6 rounded shadow-lg">
+        <h1 className="text-4xl font-bold">Employer Profile</h1>
+      </header>
 
-          <button
-            onClick={handleEditClick}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Edit Profile
-          </button>
-        </div>
-      )}
+      <div className="mt-6 bg-white shadow-lg rounded-lg p-6">
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
+        {isEditing ? (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label className="block mb-2 font-medium" htmlFor="name">
+                Name
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="name"
+                defaultValue={employee.name}
+                name="name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium" htmlFor="company">
+                Company
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="company"
+                defaultValue={employee.company}
+                name="company"
+                required
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium" htmlFor="position">
+                Position
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="position"
+                defaultValue={employee.position || ''}
+                name="position"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium" htmlFor="contactNumber">
+                Contact Number
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="contactNumber"
+                defaultValue={employee.contactNumber || ''}
+                name="contactNumber"
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Save Changes
+            </button>
+          </form>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">{employee.name}</h2>
+            <p className="mb-2">
+              <strong>Company:</strong> {employee.company}
+            </p>
+            <p className="mb-2">
+              <strong>Email:</strong> {employee.email}
+            </p>
+            <p className="mb-2">
+              <strong>Position:</strong> {employee.position || 'N/A'}
+            </p>
+            <p className="mb-2">
+              <strong>Contact Number:</strong> {employee.contactNumber || 'N/A'}
+            </p>
+
+            <h3 className="text-xl font-semibold mt-4">Hiring For</h3>
+            <ul className="list-disc pl-6 space-y-2">
+              {employee.hiringFor?.map((role: string, index: number) => (
+                <li key={index} className="flex items-center">
+                  <span className="mr-2">📌</span>
+                  {role}
+                </li>
+              )) || <li>No hiring roles specified</li>}
+            </ul>
+
+            <button
+              onClick={handleEditClick}
+              className="mt-6 bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Edit Profile
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
