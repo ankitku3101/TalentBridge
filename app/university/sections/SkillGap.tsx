@@ -2,7 +2,10 @@ import React from 'react'
 
 function SkillGap() {
   return (
-    <div>SkillGap</div>
+    <div className='h-screen'>
+        <h1 className=''>Skill Gap</h1>
+
+    </div>
   )
 }
 
