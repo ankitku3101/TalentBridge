@@ -56,7 +56,7 @@ async def generate_project_description(proj_desc : Proj_desc):
         },
         {
             "role":"user",
-            "content": f"Generate a project description for a project titled '{proj_desc.project_title}' that uses the following skills: {proj_desc.skills}. The description should explain the purpose, technology used, and outcomes of the project.",
+            "content": f"Generate a project description for a project titled '{proj_desc.project_title}' that uses the following skills: {proj_desc.skills}. The description should explain the purpose, technology used, and outcomes of the project. And write it less than 50 words only.",
         },
     ]
     response = openai.chat.completions.create(
@@ -81,7 +81,7 @@ async def generate_job_description(job_des: Job_des):
         },
         {
             "role":"user",
-            "content": f"Generate a job description to be included in a resume for the role of {job_des.job_title} at {job_des.company_name}. The description should highlight the user's key responsibilities, significant achievements, technologies worked on, and their overall contribution to the company's success."
+            "content": f"Generate a job description to be included in a resume for the role of {job_des.job_title} at {job_des.company_name}. The description should highlight the user's key responsibilities, significant achievements, technologies worked on, and their overall contribution to the company's success. And write it less than 50 words."
         },
     ]
     response = openai.chat.completions.create(
@@ -106,7 +106,7 @@ async def generate_career_objective(career_obj: Career_obj):
         },
         {
             "role":"user",
-            "content": f"Generate a career objective for a candidate with the following skills: {career_obj.skills} and past experience in {career_obj.past_experience}. The objective should highlight the candidate's aspirations, strengths, and how they plan to contribute to a future role.",
+            "content": f"Generate a career objective for a candidate with the following skills: {career_obj.skills} and past experience in {career_obj.past_experience}. The objective should highlight the candidate's aspirations, strengths, and how they plan to contribute to a future role. And write it less than 50 words.",
         },
     ]
     response = openai.chat.completions.create(
@@ -138,17 +138,29 @@ async def generate_resume(request: request):
         json.dump(form_data, f, indent=4)
 
     # Generate the resume
-    output_file = "AI Resume Builder/Resume/generated_resume.docx"
+    sanitized_name = form_data['name'].replace(" ", "_")  # Replace spaces with underscores
+    output_dir = "AI Resume Builder/Resume"
+    output_file = f"{output_dir}/{sanitized_name}.docx"
+
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
     generate_resume_from_template(form_data, output_file)
 
     # Return the file download link
-    return {"download_link": f"AI Resume Builder/Resume/{output_file}"}
+    return {"downloaded": f"{sanitized_name}.docx"}
 
 @app.get("/download/{filename}")
 async def download_resume(filename: str):
-    file_path = f"./{filename}"
-    return FileResponse(filename, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
-
+    file_path = f"./AI Resume Builder/Resume/{filename}"
+    file_path = os.path.join("AI Resume Builder", "Resume", filename)
+    if os.path.exists(file_path):
+        return FileResponse(
+            path=file_path,
+            media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            filename=filename,
+        )
+    else:
+        return {"error": "File not found"}
 
 # These Endpoints are for the Job Matching 
 @app.post('/search/{query}')

@@ -1,60 +1,58 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
-const DeleteJob = ({ jobId }: { jobId: string }) => {
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const router = useRouter(); // To navigate after successful deletion
-  
+export default function UpdateJob() {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const jobId = searchParams?.get('jobId') || null;
 
   const handleDelete = async () => {
+    console.log(jobId);
+    
     if (!jobId) {
-      setError('Job ID is required.');
+      toast.error('Job ID is required.');
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await fetch(`/api/jobs/deleteJob/${jobId}`, {
+      const response = await fetch(`/api/jobs/deletejob/${jobId}`, {
         method: 'DELETE',
       });
 
-      // Check if the response is ok before parsing the JSON
-      if (!response.ok) {
-        const data = await response.json();
-        setError(data.error || 'Something went wrong.');
-        return;
+      if (response.ok) {
+        toast.success('Job deleted successfully.');
+        router.push('/employee/dashboard'); // Redirect to the appropriate page
+      } else {
+        const error = await response.json();
+        toast.error(error.error || 'Failed to delete job.');
       }
-
-      // Clear any previous errors and show success message
-      setError('');
-      setSuccessMessage('Job deleted successfully.');
-
-      // Redirect after successful deletion
-      router.push('/your-jobs-page'); // Change to the appropriate page
     } catch (error: any) {
-      setError('Error while deleting job: ' + error.message);
+      toast.error('Error while deleting job: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Delete Job Posting</h2>
-
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        {successMessage && <p className="text-green-500 text-sm mb-4">{successMessage}</p>}
-
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-4">Delete Job Posting</h2>
+        <p className="mb-4 text-gray-600">Are you sure you want to delete this job?</p>
         <button
           onClick={handleDelete}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="w-full py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-red-500"
+          disabled={loading}
         >
-          Delete Job
+          {loading ? 'Deleting...' : 'Delete Job'}
         </button>
       </div>
     </div>
   );
 };
 
-export default DeleteJob;

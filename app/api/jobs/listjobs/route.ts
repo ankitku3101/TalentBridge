@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
     const company = searchParams.get('company') || '';
     const location = searchParams.get('location') || '';
     const employmentType = searchParams.get('employmentType') || '';
-    const minSalary = searchParams.get('minSalary') || '0';
-    const maxSalary = searchParams.get('maxSalary') || '1000000';
+    const minSalary = searchParams.get('minSalary') || 0;
+    const maxSalary = searchParams.get('maxSalary') || 1000000;
     const skills = searchParams.get('skills')?.split(',') || [];
 
     // Pagination parameters

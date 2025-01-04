@@ -16,6 +16,7 @@ export async function POST(request:NextRequest,{params}:Params){
     try {
         //Job ID
         const {id} = await params;
+        console.log("HI");
         
         if(!mongoose.Types.ObjectId.isValid(id.toString())) return NextResponse.json({message:"Invalid job ID"},{status:400});
         
@@ -26,7 +27,7 @@ export async function POST(request:NextRequest,{params}:Params){
         if(!Suser){
             return NextResponse.json({error:"Unauthorized Access"},{status:403});
         }
-        
+
         //student verification
         if(!mongoose.Types.ObjectId.isValid(String(studentId).toString())) return NextResponse.json({message:"Invalid student ID"},{status:400});
         
@@ -44,10 +45,9 @@ export async function POST(request:NextRequest,{params}:Params){
             coverLetter,
             status
         })
-        console.log("Here lies the error")
         
         theJob.applicants.push(studentId);
-        await theJob.save();
+        await theJob.save({new:true});
 
         return NextResponse.json({message:"Application accepted.",application},{status:200})
     } catch (error) {

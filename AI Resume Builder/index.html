@@ -35,7 +35,7 @@
             <label for="location" class="form-label">Address:</label>
             <input type="text" id="location" name="location" class="form-control" required>
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="profilePicture" class="form-label">Profile Picture:</label>
           <div class="input-group">
             <input type="file" 
@@ -59,7 +59,7 @@
                  class="profile-preview"
                  style="display: none;" />
           </div>
-        </div>
+        </div> -->
         <button type="button" class="next-step">Next</button>
       </div>
 
@@ -100,7 +100,7 @@
             <label for="projectTitle" class="form-label">Project Title:</label>
             <input type="text" class="form-control" name="projectTitle[]" id="project_title" required />
             <label for="projectDescription" class="form-label">Description:</label>
-            <textarea name="projectDescription[]" id="project_description" class="form-control"></textarea>
+            <textarea name="projectDescription[]" id="project_description" class="form-control" placeholder="Let AI give a brief about your Project (wait for few seconds...)"></textarea>
           </div>
       </div>
 
@@ -129,7 +129,7 @@
             </div>
             <div class="mb-3">
             <label for="jobDescription" class="form-label">Description:</label>
-            <textarea class="form-control" name="jobDescription[]" id="job_description" rows="3" placeholder="Brief about your role"></textarea>
+            <textarea class="form-control" name="jobDescription[]" id="job_description" rows="3" placeholder="Let AI give brief about your role (wait for few seconds...)"></textarea>
             </div>
         </div>
         </div>
@@ -143,7 +143,7 @@
         <h3>Career Objective</h3>
         <div class="mb-3">
           <label for="careerObjective" class="form-label">Career Objective:</label>
-          <textarea id="career_objective" name="careerObjective" class="form-control"></textarea>
+          <textarea id="career_objective" name="careerObjective" class="form-control" placeholder="Let AI generate a suitable career object for you (wait for few seconds...)"></textarea>
         </div>
         <button type="button" class="prev-step">Previous</button>
         <button type="submit" class="btn-success">Submit</button>
