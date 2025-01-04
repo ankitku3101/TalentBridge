@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const DeleteJob = ({ jobId }: { jobId: string }) => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const router = useRouter(); // To navigate after successful deletion
+  
 
   const handleDelete = async () => {
     if (!jobId) {
@@ -19,14 +22,7 @@ const DeleteJob = ({ jobId }: { jobId: string }) => {
 
       // Check if the response is ok before parsing the JSON
       if (!response.ok) {
-        const text = await response.text(); // Read the response as text
-        let data;
-        try {
-          data = JSON.parse(text); // Parse the JSON if valid
-        } catch (err) {
-          setError('Failed to parse the server response.');
-          return;
-        }
+        const data = await response.json();
         setError(data.error || 'Something went wrong.');
         return;
       }
@@ -34,6 +30,9 @@ const DeleteJob = ({ jobId }: { jobId: string }) => {
       // Clear any previous errors and show success message
       setError('');
       setSuccessMessage('Job deleted successfully.');
+
+      // Redirect after successful deletion
+      router.push('/your-jobs-page'); // Change to the appropriate page
     } catch (error: any) {
       setError('Error while deleting job: ' + error.message);
     }
