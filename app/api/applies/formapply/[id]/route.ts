@@ -21,17 +21,15 @@ export async function POST(request:NextRequest,{params}:Params){
         if(!mongoose.Types.ObjectId.isValid(id.toString())) return NextResponse.json({message:"Invalid job ID"},{status:400});
         
         //User Id
-        // const session = await getServerSession(authOptions);
-        // const studentId = session?.user.id;
-        // const Suser = await Student.findById(studentId);
-        // if(!Suser){
-        //     return NextResponse.json({error:"Unauthorized Access"},{status:403});
-        // }
-        
-        const studentId="676d61e17501110503524fc6";
+        const session = await getServerSession(authOptions);
+        const studentId = session?.user.id;
+        const Suser = await Student.findById(studentId);
+        if(!Suser){
+            return NextResponse.json({error:"Unauthorized Access"},{status:403});
+        }
 
         //student verification
-        // if(!mongoose.Types.ObjectId.isValid(String(studentId).toString())) return NextResponse.json({message:"Invalid student ID"},{status:400});
+        if(!mongoose.Types.ObjectId.isValid(String(studentId).toString())) return NextResponse.json({message:"Invalid student ID"},{status:400});
         
         const requestBody = await request.json();
         const {
