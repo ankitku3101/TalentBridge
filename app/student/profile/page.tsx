@@ -191,6 +191,9 @@ const ProfilePage = () => {
               <strong>Graduation Year:</strong> {student.graduationYear}
             </p>
             <p className="mb-2">
+              <strong>Year of Experience:</strong> {student.yoe}
+            </p>
+            <p className="mb-2">
               <strong>Email:</strong> {student.email}
             </p>
             <p className="mb-2">
@@ -202,13 +205,12 @@ const ProfilePage = () => {
 
             <h3 className="text-xl font-semibold mt-4">Skills</h3>
             <ul className="list-disc pl-6 space-y-2">
-              {student.skills?.map((skill: string, index: number) => (
-                <li key={index} className="flex items-center">
-                  <span className="mr-2">✅</span>
-                  {skill}
-                </li>
-              ))}
+                {student.skills?.map((skill: string, index: number) => (
+                  <li key={index}>{skill}</li>
+                ))}
             </ul>
+
+
 
             <button
               onClick={handleEditClick}
