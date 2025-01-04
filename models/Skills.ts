@@ -5,7 +5,8 @@ const skillSchema = new mongoose.Schema(
         skillname:{
             type:String,
             unique:true,
-            uppercase:true
+            uppercase:true,
+            trim:true
         }
     },
     {
