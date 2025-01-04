@@ -224,7 +224,7 @@ const EmployerDashboard = () => {
                 Close
               </button>
               <button
-                onClick={() => {router.push('/employee/jobs/updateJob')}}
+                onClick={() => {router.push(`/employee/jobs/updateJob?jobId=${selectedJob._id}`)}}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200"
               >
                 Edit Job

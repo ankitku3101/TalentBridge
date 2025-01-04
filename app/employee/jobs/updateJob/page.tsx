@@ -16,14 +16,13 @@ export default function UpdateJob() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const jobId = searchParams.get('jobId'); // Get the job ID from the query string
+  const jobId = searchParams?.get('jobId') || null;
 
   useEffect(() => {
     if (!jobId) {
       toast.error('No Job ID provided.');
-      router.push('/employee/jobs'); // Redirect back if no job ID
+      router.push('/employee/dashboard'); 
     }
-    // Optionally, fetch the current job details here to prefill the form
   }, [jobId, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -37,23 +36,27 @@ export default function UpdateJob() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
-      const response = await fetch(`/api/jobs/${jobId}`, {
+      const response = await fetch(`/api/jobs//updatejob/${jobId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
+          description: formData.description,
+          location: formData.location,
+          employmentType: formData.employmentType,
           skillsRequired: formData.skillsRequired.split(',').map((skill) => skill.trim()),
+          minSalary: formData.minSalary,
+          maxSalary: formData.maxSalary,
         }),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
-        toast.success('Job updated successfully!');
-        router.push('/employee/jobs'); // Redirect to the jobs listing page
+        toast.success(result.message || 'Job updated successfully!');
+        router.push('/employee/dashboard'); // Redirect to the jobs listing page
       } else {
         const error = await response.json();
         toast.error(error.error || 'Failed to update job.');
@@ -64,6 +67,7 @@ export default function UpdateJob() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -82,7 +86,6 @@ export default function UpdateJob() {
             value={formData.description}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            required
           />
         </div>
         <div className="mb-4">
@@ -95,7 +98,7 @@ export default function UpdateJob() {
             value={formData.location}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            required
+            
           />
         </div>
         <div className="mb-4">
@@ -108,7 +111,7 @@ export default function UpdateJob() {
             value={formData.employmentType}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            required
+            
           />
         </div>
         <div className="mb-4">
@@ -121,7 +124,7 @@ export default function UpdateJob() {
             value={formData.skillsRequired}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            required
+            
           />
         </div>
         <div className="mb-4">
@@ -135,7 +138,7 @@ export default function UpdateJob() {
             value={formData.minSalary}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            required
+            
           />
         </div>
         <div className="mb-4">
@@ -149,7 +152,7 @@ export default function UpdateJob() {
             value={formData.maxSalary}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            required
+            
           />
         </div>
         <button
