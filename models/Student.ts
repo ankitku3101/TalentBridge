@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { validators } from 'tailwind-merge';
 
 const studentSchema = new mongoose.Schema(
   {
@@ -43,6 +44,14 @@ const studentSchema = new mongoose.Schema(
       required: true,
       default: "student" 
     },
+    YOE:{
+      type:Number,
+      default:0,
+      validate:{
+        validator:(value:number)=> value>=0,
+        message:"Year of experience can't be in negative."
+      }
+    }
   },
   { 
     timestamps: true 
