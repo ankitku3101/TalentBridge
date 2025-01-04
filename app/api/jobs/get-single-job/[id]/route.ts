@@ -1,6 +1,9 @@
+import { authOptions } from "@/lib/authOptions";
 import connectMongo from "@/lib/mongodb";
+import Employer from "@/models/Employer";
 import Job from "@/models/Job";
 import mongoose from "mongoose";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Params{
@@ -12,18 +15,31 @@ export async function GET(request: NextRequest,{params}:Params){
         /**
          * Session employer verification
          */
-        console.log("Error is here");
-        await connectMongo();
 
+        const session = await getServerSession(authOptions);
+        const userId = session?.user.id;
+        const doesUserExists = await Employer.exists({_id:userId});
+        if(!doesUserExists){
+            return NextResponse.json({error:"Unauthorized Access"},{status:403});
+        }
+
+        
+        await connectMongo();
+        
         //Job Id
         const {id} = params;
-
         if(!mongoose.Types.ObjectId.isValid(id.toString())){
             return NextResponse.json({error:"Invalid ID"},{status:403});
         }
 
+        //Belongs to correct User?
+        const isBelongToCorrectUser = await Job.find({_id:id,postedBy:userId})
+        if(!isBelongToCorrectUser){
+            return NextResponse.json({error:"Unauthorized request"},{status:403});
+        }
+        
         const JobData = await Job.findById(id);
-
+        
         if(!JobData){
             return NextResponse.json({error:"No document found on the id"},{status:404});
         }
