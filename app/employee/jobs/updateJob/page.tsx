@@ -38,7 +38,7 @@ export default function UpdateJob() {
     setLoading(true);
   
     try {
-      const response = await fetch(`/api/jobs//updatejob/${jobId}`, {
+      const response = await fetch(`/api/jobs/updatejob/${jobId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
