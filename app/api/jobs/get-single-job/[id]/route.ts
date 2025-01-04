@@ -28,7 +28,7 @@ export async function GET(request: NextRequest,{params}:Params){
         await connectMongo();
         
         //Job Id
-        const {id} = params;
+        const {id} = await params;
         if(!mongoose.Types.ObjectId.isValid(id.toString())){
             return NextResponse.json({error:"Invalid ID"},{status:403});
         }
