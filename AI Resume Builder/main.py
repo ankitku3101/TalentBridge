@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import json
 from generate_resume import generate_resume_from_template
+from job_matching.main import JobMatching
 
 load_dotenv()
 
@@ -138,6 +139,18 @@ async def generate_resume(request: request):
 async def download_resume(filename: str):
     file_path = f"./{filename}"
     return FileResponse(filename, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
+
+
+# These Endpoints are for the Job Matching 
+class MatchData(BaseModel):
+    student_id: str
+    job_id: str
+@app.post()
+async def get_matching_percentage(matchData: MatchData):
+    jm = JobMatching()
+    return {
+        "match_percent": jm.find_match_percent(student_id=matchData.student_id, job_id=matchData.job_id)
+    }
 
 
 if __name__ == "__main__":
