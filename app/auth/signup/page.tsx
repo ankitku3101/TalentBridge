@@ -20,6 +20,7 @@ const SignupPage = () => {
     position: '',
     hiringFor: '',
     contactNumber: '',
+    YOE:0
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,6 +46,7 @@ const SignupPage = () => {
       position: '',
       hiringFor: '',
       contactNumber: '',
+      YOE:0
     });
   };
 
@@ -179,6 +181,15 @@ const SignupPage = () => {
                 placeholder="Skills (comma-separated)"
                 value={formData.skills}
                 onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg"
+              />
+              <input
+                type="number"
+                name="YOE"
+                placeholder="Year Of Experience"
+                value={formData.graduationYear}
+                onChange={handleChange}
+                required
                 className="w-full px-4 py-2 border rounded-lg"
               />
             </>
