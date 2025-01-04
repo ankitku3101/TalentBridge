@@ -3,3 +3,9 @@ openai
 pydantic
 python-dotenv
 uvicorn
+pymongo
+python-docx
+azure-search-documents
+azure-identity
+requests
+numpy
