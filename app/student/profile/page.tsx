@@ -25,8 +25,8 @@ const ProfilePage = () => {
           if (data.message) {
             setError(data.message);
           } else {
-            if (data.skills && typeof data.skills === 'string') {
-              data.skills = data.skills.split(',').map((skill: string) => skill.trim());
+            if (data.skills) {
+              data.skills = data.skills.map((skill: any) => skill.skillname.trim());
             }
             setStudent(data);
           }
