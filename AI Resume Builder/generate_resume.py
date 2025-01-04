@@ -4,11 +4,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 
 def generate_resume_from_template(data, output_file):
-    """
-    Generate a resume Word document based on a given template.
-    :param data: Dictionary containing form inputs
-    :param output_file: Path to save the Word file
-    """
+
     doc = Document()
 
     # Title Section: Name and Job Title
@@ -42,7 +38,7 @@ def generate_resume_from_template(data, output_file):
     for edu in data['education']:
         para = doc.add_paragraph(style="List Bullet")
         para.add_run(f"{edu['degree']} - {edu['institute']}").bold = True
-        para.add_run(f"\nYear: {edu['year']} - CGPA: {edu.get('cgpa', 'N/A')}")
+        para.add_run(f"\nYear: {edu['year']}")
     doc.add_paragraph()
 
     # Technical Skills

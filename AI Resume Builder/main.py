@@ -52,7 +52,7 @@ async def generate_project_description(proj_desc : Proj_desc):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 5,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
@@ -77,7 +77,7 @@ async def generate_job_description(job_des: Job_des):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 10,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
@@ -102,7 +102,7 @@ async def generate_career_objective(career_obj: Career_obj):
     response = openai.chat.completions.create(
         model = "gpt-4o-mini",
         messages = message,
-        max_tokens = 5,
+        max_tokens = 50,
     )
     return {
         "data": response.choices[0].message.content.strip()
