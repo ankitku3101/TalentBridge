@@ -68,7 +68,7 @@ const ProfilePage = () => {
       if (result.skills && typeof result.skills === 'string') {
         result.skills = result.skills.split(',').map((skill: string) => skill.trim());
       } else if (Array.isArray(result.skills)) {
-        result.skills = result.skills.map((skill: string) => skill.trim());
+        result.skills = result.skills.map((skill: any) => skill.skillname.trim());
       }
       setStudent(result);
       setIsEditing(false);
