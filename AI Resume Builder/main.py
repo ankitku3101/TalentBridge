@@ -1,4 +1,6 @@
 import os
+import sys
+from bson import ObjectId
 from fastapi import FastAPI
 import uvicorn 
 from dotenv import load_dotenv
@@ -8,9 +10,16 @@ from pydantic import BaseModel
 from fastapi.responses import FileResponse
 import json
 from generate_resume import generate_resume_from_template
-from job_matching.main import JobMatching
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from job_matching.student_search import StudentSearch
 
-load_dotenv()
+
+load_dotenv(".env.local")
+
+# Load environment variables
+mongodb_uri = os.getenv("MONGODB_URI")
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
 
 app = FastAPI()
 
@@ -30,7 +39,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 openai = OpenAI(
-    api_key = os.environ.get("API_KEY")
+    api_key = openai_api_key
 )
 
 class Proj_desc(BaseModel):
@@ -142,14 +151,22 @@ async def download_resume(filename: str):
 
 
 # These Endpoints are for the Job Matching 
-class MatchData(BaseModel):
-    student_id: str
-    job_id: str
-@app.post()
-async def get_matching_percentage(matchData: MatchData):
-    jm = JobMatching()
+@app.post('/search/{query}')
+async def get_matching_percentage(query: str):
+    # Initialize search system
+    search_system = StudentSearch(mongodb_uri, openai_api_key)
+    
+    # Perform search
+    matching_students = search_system.search_students(query)
+    matching_student_id_obj = []
+    
+    for student in matching_students:
+        matching_student_id_obj.append(ObjectId(student['_id']))
+    
+    print(matching_students)
+    
     return {
-        "match_percent": jm.find_match_percent(student_id=matchData.student_id, job_id=matchData.job_id)
+        'matching_students': matching_students
     }
 
 

@@ -18,7 +18,7 @@ client = MongoClient(connection_string)
 dbname = client['test']
 
 # Access the desired collection
-student_collection = dbname['jobapplications'] 
+student_collection = dbname['students'] 
 
 # Example: Retrieve all documents from the collection
 documents = student_collection.find()
@@ -27,5 +27,5 @@ skills_count = {}
 
 # Print each document
 for document in documents:
-    print(document)
+    print(document['yoe'])
             

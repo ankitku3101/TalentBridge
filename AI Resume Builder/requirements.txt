@@ -4,4 +4,8 @@ pydantic
 python-dotenv
 uvicorn
 pymongo
-spacy
+python-docx
+azure-search-documents
+azure-identity
+requests
+numpy
