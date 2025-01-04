@@ -3,6 +3,8 @@ import Student from "@/models/Student";
 import Employer from "@/models/Employer";
 import dbConnect from "@/lib/mongodb";
 import { authOptions } from "@/lib/authOptions";
+import mongoose from "mongoose";
+import Skills from "@/models/Skills";
 
 // API Route to fetch the profile (Student or Employer)
 export async function GET(request: Request) {
@@ -19,7 +21,9 @@ export async function GET(request: Request) {
 
     let profile;
     if (userRole === "student") {
-      profile = await Student.findById(userId);
+      if(!mongoose.models.Skills){mongoose.model('Skills', Skills.schema);}
+      profile = await Student.findById(userId).populate('skills',"skillname -_id");
+      console.log(profile);
     } else if (userRole === "employer") {
       profile = await Employer.findById(userId);
     } else {
@@ -49,11 +53,25 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json();
+    const {skills} = body;
+    const SkillValues = skills.split(',').map(S=>S.trim());
     await dbConnect();
 
     let updatedProfile;
     if (userRole === "student") {
-      updatedProfile = await Student.findByIdAndUpdate(userId, body, { new: true });
+
+      const SkillIds:mongoose.Types.ObjectId[] = [];
+      
+      for(const name of SkillValues){
+        let foundskill = await Skills.findOne({skillname:name.toUpperCase()});
+    
+        if(!foundskill){
+          foundskill = await Skills.create({skillname:name});
+        }
+    
+        SkillIds.push(foundskill._id);
+      }
+      updatedProfile = await Student.findByIdAndUpdate(userId, {...body,skills:SkillIds}, { new: true }).populate('skills',"skillname -_id");
     } else if (userRole === "employer") {
       updatedProfile = await Employer.findByIdAndUpdate(userId, body, { new: true });
     } else {

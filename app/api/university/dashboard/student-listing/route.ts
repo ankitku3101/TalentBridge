@@ -1,7 +1,13 @@
 import { NextRequest,NextResponse } from "next/server";
-import Application from "@/models/Application";
 import Student from "@/models/Student";
+import Skills from "@/models/Skills";
 import connectMongo from "@/lib/mongodb";
+import mongoose from "mongoose";
+
+interface SkillDocument {
+    _id: mongoose.Types.ObjectId;
+    skillname: string;
+}
 
 export async function POST(request: NextRequest){
     try {
@@ -13,35 +19,38 @@ export async function POST(request: NextRequest){
         const resquestBody = await request.json();
         const { skills } = resquestBody;
 
+        const skillDocuments: SkillDocument[] = await Skills.find(
+            { skillname: { $in: skills } },
+            '_id'
+        );
+
+        const skillIds: mongoose.Types.ObjectId[] = skillDocuments.map(skill => skill._id);
+
         const StudentsWithSkill = await Student.aggregate([
             {
                 $match:{
                     skills:{
-                        $in:skills
+                        $in:skillIds
                     }
                 }
             },
             {
                 $project:{
-                    name:1,
-                    skills:1,
                     matchedSkills:{
                         $setIntersection:[
                             "$skills",
-                            skills
+                            skillIds
                         ]
                     },
-                    rollNumber:1,
-                    degree:1,
-                    email:1,
-                    phone:1,
-                    yoe:1
                 }
             },
             {
                 $addFields:{
                     matchedSkillCount:{$size:"$matchedSkills"}
                 }
+            },
+            {
+                $count: "totalStudents"
             },
             {
                 $sort:{
