@@ -16,6 +16,7 @@ export async function POST(request:NextRequest,{params}:Params){
     try {
         //Job ID
         const {id} = await params;
+        console.log("HI");
         
         if(!mongoose.Types.ObjectId.isValid(id.toString())) return NextResponse.json({message:"Invalid job ID"},{status:400});
         

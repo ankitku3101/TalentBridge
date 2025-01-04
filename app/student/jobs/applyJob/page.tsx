@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-
+import { getSession } from 'next-auth/react';
+import { useParams } from 'next/navigation'; // Import useParams for App Router
 
 interface Job {
   _id: string;
@@ -20,45 +21,44 @@ interface Job {
 const ApplyJobPage = () => {
   const router = useRouter();
   const [job, setJob] = useState<Job | null>(null); // Job data from the backend
-  const [coverLetter, setCoverLetter] = useState<string>('');
+  const [coverLetter, setCoverLetter] = useState<string>(''); // Store cover letter input
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [studentId, setStudentId] = useState<string | null>(null);
 
-  const jobId = "12345"; // Replace this with actual jobId passed via URL or props
+  // Use useParams to get the jobId from the URL
+  const searchParams = useSearchParams();
+  const jobId = searchParams?.get('jobId') || null;
+  console.log(jobId);
+  
+
+  const validateSession = async () => {
+    const session = await getSession();
+    setStudentId(session?.user.id || 'id');
+  };
 
   useEffect(() => {
-    // Fetch the job details from the backend using the jobId
-    const fetchJob = async () => {
-      try {
-        const res = await fetch(`/api/jobs/${jobId}`);
-        const jobData = await res.json();
-        setJob(jobData);
-      } catch (error) {
-        console.error('Error fetching job data:', error);
-      }
-    };
-
-    fetchJob();
-  }, [jobId]);
+    validateSession();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     // Handle application submission logic
     try {
-      const res = await fetch('/api/applications', {
+      const res = await fetch(`/api/applies/formapply/${jobId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          student: "studentId", // replace with actual student ID
-          job: job?._id,
+          student: studentId, // replace with actual student ID
+          job: jobId,
           coverLetter,
         }),
       });
 
       if (res.ok) {
         setIsSubmitted(true);
-        
         router.push('/student/dashboard');
       } else {
         console.error('Failed to submit the application');
@@ -117,3 +117,4 @@ const ApplyJobPage = () => {
 };
 
 export default ApplyJobPage;
+
