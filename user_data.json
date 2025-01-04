@@ -4,27 +4,28 @@
     "address": "36-Gopindhpur,near Odisha Adarsh Vidyalaya, Jatani gate road",
     "phone": "07205374495",
     "email": "mohantyhitesh4495@gmail.com",
-    "career_objective": "Dedicated and dynamic IT professional with a strong foundation in Java and Python, complemented by impactful experience as an AI Intern at Google, where I contributed to cutting-edge projects aimed at improving user experience and operational efficiency. My objective is to leverage my proficiency in software",
+    "career_objective": "Dynamic IT professional with expertise in Java, C, C++, Python, and web technologies, aiming to leverage strong analytical and machine learning skills to drive innovation and enhance performance in a forward-thinking organization. Committed to collaborating with cross-functional teams to deliver impactful",
     "education": [
         {
             "degree": "B.Tech in Computer Science and Engineering",
             "institute": "GIFT Autonomous, Bhubaneswar ",
             "year": "2026"
-        },
-        {
-            "degree": "Intermediate (+2)",
-            "institute": "Aska Science College, Aska",
-            "year": "2022"
         }
     ],
     "skills": [
-        "Java",
-        " Python"
+        "java",
+        " C",
+        " C++",
+        " Python",
+        " HTML",
+        " SQL",
+        " CSS",
+        " JavaScript"
     ],
     "projects": [
         {
             "name": "Hospital Management System",
-            "description": "The Hospital Management System project is designed to streamline healthcare facilities' operations, enhancing administrative and patient care processes. The primary purpose of this system is to manage the numerous aspects of hospital operations, including patient records, appointment scheduling, billing, and staff"
+            "description": "The Hospital Management System streamlines patient care by integrating appointment scheduling, medical records, and billing processes. Developed using Java for backend services, C/C++ for performance optimization, and HTML, CSS, JavaScript for the user interface, with SQL for database"
         }
     ]
 }

@@ -101,9 +101,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (response.ok) {
       const data = await response.json();
-      alert("Resume generated successfully! in folder: " + data.download_link);
+      const filename = data.downloaded; // Extract the filename from the response
+      
+      const downloadLink = document.createElement("a");
+      downloadLink.href = `http://127.0.0.1:8080/download/${filename}`;
+      downloadLink.textContent = "Download your resume";
+      downloadLink.download = filename; // Suggest a filename for download
+      downloadLink.style.display = "block";
+      downloadLink.style.marginTop = "20px";
+      downloadLink.style.color("black")
+      document.body.appendChild(downloadLink);
     } else {
       alert("Error generating resume. Please try again.");
-    }
+    } 
   });
 });
