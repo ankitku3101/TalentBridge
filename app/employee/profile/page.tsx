@@ -129,6 +129,18 @@ const EmployerProfilePage = () => {
                 name="contactNumber"
               />
             </div>
+            <div>
+              <label className="block mb-2 font-medium" htmlFor="hiringFor">
+                Hiring For (comma-separated)
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="hiringFor"
+                defaultValue={employee.hiringFor?.join(', ')}
+                name="hiringFor"
+              />
+            </div>
             <button
               type="submit"
               className="mt-4 w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition duration-300"
