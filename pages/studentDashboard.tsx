@@ -29,19 +29,24 @@ const StudentDashboard = () => {
   // Fetch jobs from API
   const fetchJobs = async () => {
     try {
-      const response = await fetch("/api/applies/list-all-jobs");
+      const params = new URLSearchParams({
+        title: searchQuery, // You can add other filters here
+        page: '1',
+        limit: '10',
+      });
+      const response = await fetch(`/api/applies/list-all-jobs?${params.toString()}`);
       const data = await response.json();
-      console.log("Fetched jobs data:", data); // Log the API response
       if (data.success) {
         setJobs(data.data.jobs);
       } else {
         setError(data.message || "Failed to fetch jobs");
       }
     } catch (err) {
-      console.error("Error fetching jobs:", err); // Log any fetch errors
+      console.error("Error fetching jobs:", err);
       setError("Failed to fetch jobs");
     }
   };
+  
 
   const handleProfileClick = () => {
     router.push("/student/profile");
@@ -57,16 +62,21 @@ const StudentDashboard = () => {
   };
 
   // Filter job data based on search query
-  const filteredJobs = jobs.filter(
-    (job) =>
+  const filteredJobs = jobs.filter((job) => {
+    const createdAtDate = new Date(job.createdAt);
+    const formattedDate = createdAtDate.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  
+    return (
       job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+      job.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      formattedDate.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  })
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -130,7 +140,14 @@ const StudentDashboard = () => {
               <p className="text-gray-600 mb-4">{job.location}</p>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">
-                  Posted: {Math.floor(Math.random() * 10) + 1} days ago
+                Posted: {new Date(job.createdAt).toLocaleString("en-US", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
                 </span>
                 <button className="text-white bg-indigo-600 hover:bg-blue-600 px-4 py-2 rounded-md text-sm transition duration-200 shadow hover:shadow-md">
                   Apply
