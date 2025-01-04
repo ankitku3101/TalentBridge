@@ -44,7 +44,7 @@ const studentSchema = new mongoose.Schema(
       required: true,
       default: "student" 
     },
-    yearOfExperience:{
+    YOE:{
       type:Number,
       default:0,
       validate:{
