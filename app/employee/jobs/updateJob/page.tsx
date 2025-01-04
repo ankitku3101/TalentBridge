@@ -21,7 +21,24 @@ export default function UpdateJob() {
   useEffect(() => {
     if (!jobId) {
       toast.error('No Job ID provided.');
-      router.push('/employee/dashboard'); 
+      router.push('/employee/dashboard');
+    } else {
+      // Fetch existing job data and populate the form
+      const fetchJobData = async () => {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const data = await response.json();
+        if (data) {
+          setFormData({
+            description: data.description || '',
+            location: data.location || '',
+            employmentType: data.employmentType || '',
+            skillsRequired: data.skillsRequired?.join(', ') || '',
+            minSalary: data.minSalary || '',
+            maxSalary: data.maxSalary || '',
+          });
+        }
+      };
+      fetchJobData();
     }
   }, [jobId, router]);
 
@@ -36,38 +53,44 @@ export default function UpdateJob() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
+    // Prepare form data to send
+    const updatedData = {
+      description: formData.description,
+      location: formData.location,
+      employmentType: formData.employmentType,
+      skillsRequired: formData.skillsRequired
+        ? formData.skillsRequired.split(',').map((skill) => skill.trim())
+        : [],
+      minSalary: formData.minSalary,
+      maxSalary: formData.maxSalary,
+    };
+
     try {
       const response = await fetch(`/api/jobs//updatejob/${jobId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          description: formData.description,
-          location: formData.location,
-          employmentType: formData.employmentType,
-          skillsRequired: formData.skillsRequired.split(',').map((skill) => skill.trim()),
-          minSalary: formData.minSalary,
-          maxSalary: formData.maxSalary,
-        }),
+        body: JSON.stringify(updatedData),
       });
-  
+
       if (response.ok) {
         const result = await response.json();
         toast.success(result.message || 'Job updated successfully!');
-        router.push('/employee/dashboard'); // Redirect to the jobs listing page
       } else {
         const error = await response.json();
         toast.error(error.error || 'Failed to update job.');
       }
-    } catch (error: any) {
+
+      // Always redirect to dashboard after submission
+      router.push('/employee/dashboard');
+    } catch (error) {
       toast.error('An unexpected error occurred.');
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -98,7 +121,6 @@ export default function UpdateJob() {
             value={formData.location}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            
           />
         </div>
         <div className="mb-4">
@@ -111,20 +133,18 @@ export default function UpdateJob() {
             value={formData.employmentType}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            
           />
         </div>
         <div className="mb-4">
           <label htmlFor="skillsRequired" className="block text-sm font-medium">
             Skills Required (comma-separated)
           </label>
-          <input
+            <input
             id="skillsRequired"
             name="skillsRequired"
             value={formData.skillsRequired}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            
           />
         </div>
         <div className="mb-4">
@@ -138,7 +158,6 @@ export default function UpdateJob() {
             value={formData.minSalary}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            
           />
         </div>
         <div className="mb-4">
@@ -152,7 +171,6 @@ export default function UpdateJob() {
             value={formData.maxSalary}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
-            
           />
         </div>
         <button

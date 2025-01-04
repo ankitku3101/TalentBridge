@@ -125,37 +125,39 @@ const StudentDashboard = () => {
         )}
 
         {/* Job Management Section */}
-        {filteredJobs.length === 0 ? (
-          <div className="text-gray-500">No jobs found.</div>
-        ) : (
-          filteredJobs.map((job, index) => (
-            <div
-              key={index}
-              className="bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-2xl hover:bg-gradient-to-r from-blue-100 to-indigo-100 transform hover:scale-105 transition-transform duration-300"
-            >
-              <h3 className="font-semibold text-xl mb-2 text-indigo-600 hover:text-blue-700">
-                {job.jobTitle}
-              </h3>
-              <p className="text-gray-700 font-medium">{job.company}</p>
-              <p className="text-gray-600 mb-4">{job.location}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">
-                Posted: {new Date(job.createdAt).toLocaleString("en-US", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
-                </span>
-                <button className="text-white bg-indigo-600 hover:bg-blue-600 px-4 py-2 rounded-md text-sm transition duration-200 shadow hover:shadow-md">
-                  Apply
-                </button>
-              </div>
-            </div>
-          ))
-        )}
+        {filteredJobs.map((job, index) => (
+  <div
+    key={job.id || `job-${index}`} // Fallback to index if job.id is not unique
+    className="bg-white shadow-lg rounded-lg p-6 m-2 hover:shadow-2xl hover:bg-gradient-to-r from-blue-100 to-indigo-100 transform hover:scale-105 transition-transform duration-300"
+  >
+    <h3 className="font-semibold text-xl mb-2 text-indigo-600 hover:text-blue-700">
+      {job.jobTitle}
+    </h3>
+    <p className="text-gray-700 font-medium">{job.company}</p>
+    <p className="text-gray-600 mb-4">{job.location}</p>
+    <div className="flex justify-between items-center">
+      <span className="text-sm text-gray-500">
+        Posted:{" "}
+        {new Date(job.createdAt).toLocaleString("en-US", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })}
+      </span>
+      <button
+        onClick={() => router.push(`/student/jobs/applyJob?jobId=${job._id}`)}
+        className="text-white bg-indigo-600 hover:bg-blue-600 px-4 py-2 rounded-md text-sm transition duration-200 shadow hover:shadow-md"
+      >
+        Apply
+      </button>
+    </div>
+  </div>
+))}
+
+
       </main>
 
       {/* Footer */}
