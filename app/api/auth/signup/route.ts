@@ -3,6 +3,8 @@ import Student from '@/models/Student';
 import Employer from '@/models/Employer';
 import dbConnect from '@/lib/mongodb';
 import { NextRequest, NextResponse } from 'next/server';
+import Skills from '@/models/Skills';
+import mongoose from 'mongoose';
 
 export async function POST(request: NextRequest) {
   try {
@@ -70,6 +72,19 @@ export async function POST(request: NextRequest) {
 
       const hashedPassword = await hash(password, 10);
 
+      //Skill Setting
+      const SkillIds:mongoose.Types.ObjectId[] = [];
+
+      for(const name of skills){
+        let foundskill = await Skills.findOne({skillname:name.toUpperCase()});
+
+        if(!foundskill){
+          foundskill = await Skills.create({skillname:name});
+        }
+
+        SkillIds.push(foundskill._id);
+      }
+
       const newStudent = await Student.create({
         name,
         age,
@@ -78,7 +93,7 @@ export async function POST(request: NextRequest) {
         rollNumber,
         degree,
         graduationYear,
-        skills: skills || [],
+        skills: SkillIds || [],
         phone,
         role: 'student',
         yoe
