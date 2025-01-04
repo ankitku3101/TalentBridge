@@ -1,5 +1,6 @@
 import { NextRequest,NextResponse } from "next/server";
 import Application from "@/models/Application";
+import Student from "@/models/Student";
 import connectMongo from "@/lib/mongodb";
 
 export async function GET(request:NextRequest){
