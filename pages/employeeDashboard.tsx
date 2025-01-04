@@ -62,6 +62,8 @@ const EmployerDashboard = () => {
       const data = await response.json();
       if (data.success) {
         setJobs(data.data.jobs);
+        console.log(data.data.jobs);
+        
         setTotalPages(data.data.totalPages);
       }
     } catch (error) {
