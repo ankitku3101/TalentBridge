@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     let profile;
     if (userRole === "student") {
       if(!mongoose.models.Skills){mongoose.model('Skills', Skills.schema);}
-      profile = await Student.findById(userId).populate('skills',"skillname -_id");
+      profile = await Student.findById(userId).populate('skills',"skillname -_id").populate('college','name -_id');
       console.log(profile);
     } else if (userRole === "employer") {
       profile = await Employer.findById(userId);

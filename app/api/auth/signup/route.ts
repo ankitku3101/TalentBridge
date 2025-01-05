@@ -5,6 +5,7 @@ import dbConnect from '@/lib/mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 import Skills from '@/models/Skills';
 import mongoose from 'mongoose';
+import University from '@/models/University';
 
 export async function POST(request: NextRequest) {
   try {
@@ -86,6 +87,8 @@ export async function POST(request: NextRequest) {
         SkillIds.push(foundskill._id);
       }
 
+      //College Id setting:
+      const collegeObjectId = await University.findOne({name:college},{_id:1});
       const newStudent = await Student.create({
         name,
         age,
@@ -93,7 +96,7 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         rollNumber,
         degree,
-        college,
+        college:collegeObjectId._id,
         graduationYear,
         skills: SkillIds || [],
         phone,
@@ -106,7 +109,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

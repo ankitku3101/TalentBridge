@@ -133,7 +133,7 @@ const ProfilePage = () => {
                 required
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block mb-2 font-medium" htmlFor="college">
                 College
               </label>
@@ -145,7 +145,7 @@ const ProfilePage = () => {
                 name="college"
                 required
               />
-            </div>
+            </div> */}
             <div>
               <label className="block mb-2 font-medium" htmlFor="graduationYear">
                 Graduation Year
@@ -199,6 +199,9 @@ const ProfilePage = () => {
             </p>
             <p className="mb-2">
               <strong>Degree:</strong> {student.degree}
+            </p>
+            <p className="mb-2">
+              <strong>College Name:</strong> {student.college.name}
             </p>
             <p className="mb-2">
               <strong>Graduation Year:</strong> {student.graduationYear}
