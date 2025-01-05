@@ -35,16 +35,21 @@ class StudentSearch:
             Dict: Structured search criteria
         """
         system_prompt = """
-        Extract key skills and requirements from the following job search query.
-        The technical skill should be only specific name and not any extra word like Java programming is saved as java only and similarly for other programming langurages.
-        The year of experince should be an interger value and not some word.
-        Make sure to not have those skills that have negation like "not having java" should not include java in technical skills.
-        Make sure to autocorrect and understand the context of the phase provided.
+        Extract the key skills and requirements from the following job search query.
+        1) Technical Skills:
+        Include only the explicitly mentioned skills without additional descriptive words (e.g., "Java programming" should be saved as "java").
+        Exclude skills that are negated in the query (e.g., "not in python" means "python" should not be included).
+        2) Years of Experience:
+        Extract the number of years as an integer value (e.g., "5 years of experience" should be saved as 5).
+        Avoid ambiguous or unrelated phrases when extracting this information.
+        3) Degree and Graduation Year:
+        Extract the specific degree mentioned (e.g., "Bachelor's in Computer Science" should be saved as "Computer Science").
+        Include the graduation year if specified, ensuring it is numeric (e.g., "graduated in 2022" should be saved as 2022).
         Return a JSON object with the following structure:
         {
             "technical_skills": [],
             "degree": "",
-            graduation_year: "",
+            "graduation_year": "",
             "year_of_experience": "",
         }
         """
@@ -145,25 +150,17 @@ class StudentSearch:
         try:
             results = list(self.students_collection.find(
                 mongo_query,
-                {
-                    "_id": 1,
-                    "name": 1,
-                    "skills": 1,
-                    "degree": 1,
-                    "graduationYear": 1,
-                    "yoe": 1,
-                    "email": 1,
-                    "phone": 1
-                }
+                {"_id": 1, "name": 1, "skills": 1, "degree": 1, "graduationYear": 1, "yoe": 1}
             ))
+            for student in results:
+                student['_id'] = str(student['_id'])  # Convert ObjectId to string
             return results
-            
         except Exception as e:
             print(f"Error querying MongoDB: {str(e)}")
             return []
 
 
-def main():
+def main(employer_query):
     load_dotenv('.env.local')
     # Load environment variables
     mongodb_uri = os.getenv("MONGODB_URI")
@@ -172,25 +169,10 @@ def main():
     # Initialize search system
     search_system = StudentSearch(mongodb_uri, openai_api_key)
     
-    # Example employer query
-    employer_query = """
-    Looking for a student having m.tech degree
-    """
-    
     # Perform search
     matching_students = search_system.search_students(employer_query)
     
-    # Print results
-    print(f"\nFound {len(matching_students)} matching students:")
-    for student in matching_students:
-        print(f"\nName: {student['name']}")
-        print(f"Skills: {', '.join(student['skills'])}")
-        print(f"Degree: {student['degree']}")
-        print(f"Graduation Year: {student['graduationYear']}")
-        if "yoe" in student.keys():
-            print(f"Years of Experience: {student['yoe']}")
-        print(f"Contact Email: {student['email']}")
-        print(f"Phone: {student['phone']}")
-
+    return matching_students
+    
 if __name__ == "__main__":
     main()
