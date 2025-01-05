@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaUserTie, FaPlusCircle, FaSignOutAlt, FaTimes, FaMapMarkerAlt, FaBriefcase, FaBuilding } from "react-icons/fa";
+import Search from "@/components/Search";
 
 // Types
 type Job = {
@@ -274,8 +275,14 @@ const EmployerDashboard = () => {
         </div>
       </header>
 
+      <Search />
+      
+
       {/* Main Content */}
       <main className="flex-1 bg-gradient-to-b from-blue-50 to-white py-6 px-4 md:px-10 lg:px-20">
+      <div className="font-semibold text-3xl text-blue-500 text-center p-6">
+        Your Posted Jobs
+      </div>
         {isLoading ? (
           <LoadingSpinner />
         ) : (
