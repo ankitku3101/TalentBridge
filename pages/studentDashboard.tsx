@@ -105,17 +105,27 @@ const StudentDashboard = () => {
             }}
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
           >
-            Applied
+            My Applications
+          </button>
+          <button
+            onClick={() => {
+              router.push('https://spectacular-gelato-6bc66f.netlify.app/')
+            }}
+            className="flex items-center bg-green-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+          >
+            Resume Builder
           </button>
         </div>
-
-        <button
-          onClick={handleSignOut}
-          className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
-        >
-          <FaSignOutAlt className="mr-2" />
-          Sign Out
-        </button>
+        
+        <div className="flex gap-4">
+          <button
+            onClick={handleSignOut}
+            className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+          >
+            <FaSignOutAlt className="mr-2" />
+            Sign Out
+          </button>
+        </div>
       </header>
 
       <main className="flex-1 bg-gradient-to-b from-blue-50 to-white py-6 px-20 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

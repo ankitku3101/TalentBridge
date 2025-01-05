@@ -34,6 +34,8 @@ export default function SignIn() {
         router.push('/student/dashboard');
       } else if (role === 'employer') {
         router.push('/employee/dashboard');
+      } else if (role === 'college') {
+        router.push('/university/dashboard');
       } else {
         router.push('/');
       }

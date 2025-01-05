@@ -14,6 +14,7 @@ const SignupPage = () => {
     degree: '',
     graduationYear: '',
     email: '',
+    college: '',
     phone: '',
     skills: '',
     company: '',
@@ -40,6 +41,7 @@ const SignupPage = () => {
       degree: '',
       graduationYear: '',
       email: '',
+      college: '',
       phone: '',
       skills: '',
       company: '',
@@ -153,6 +155,15 @@ const SignupPage = () => {
                 name="degree"
                 placeholder="Degree"
                 value={formData.degree}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border rounded-lg"
+              />
+              <input
+                type="text"
+                name="college"
+                placeholder="College"
+                value={formData.college}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border rounded-lg"

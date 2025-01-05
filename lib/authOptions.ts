@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import Student from "@/models/Student";
 import Employer from "@/models/Employer";
 import dbConnect from "@/lib/mongodb";
+import University from "@/models/University"
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -23,7 +24,7 @@ export const authOptions: NextAuthOptions = {
   
             await dbConnect();
   
-            let user = await Student.findOne({ email }) || await Employer.findOne({ email });
+            let user = await Student.findOne({ email }) || await Employer.findOne({ email }) || await University.findOne({ email });
   
             if (!user) {
               throw new Error("Invalid email or password");
@@ -53,22 +54,21 @@ export const authOptions: NextAuthOptions = {
       signIn: "/auth/signin", 
     },
     callbacks: {
-        async jwt({ token, user }) {
-          
-          if (user) {
-            token.id = (user.id as string); 
-            token.role = (user.role as string); 
-          }
-          return token;
-        },
-        async session({ session, token }) {
-          
-          if (token) {
-            session.user.id = token.id as string; 
-            session.user.role = token.role as string; 
-          }
-          return session;
-        },
+      async jwt({ token, user }) {
+        
+        if (user) {
+          token.id = (user.id as string); 
+          token.role = (user.role as string); 
+        }
+        return token;
       },
-    
+      async session({ session, token }) {
+        
+        if (token) {
+          session.user.id = token.id as string; 
+          session.user.role = token.role as string; 
+        }
+        return session;
+      },
+    },
   };

@@ -134,6 +134,19 @@ const ProfilePage = () => {
               />
             </div>
             <div>
+              <label className="block mb-2 font-medium" htmlFor="college">
+                College
+              </label>
+              <input
+                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
+                type="text"
+                id="college"
+                defaultValue={student.college}
+                name="college"
+                required
+              />
+            </div>
+            <div>
               <label className="block mb-2 font-medium" htmlFor="graduationYear">
                 Graduation Year
               </label>
