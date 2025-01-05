@@ -26,35 +26,50 @@ export async function POST(request: NextRequest){
 
         const skillIds: mongoose.Types.ObjectId[] = skillDocuments.map(skill => skill._id);
 
-        const StudentsWithSkill = await Student.aggregate([
+        const StudentsWithSkill = await Skills.aggregate([
             {
-                $match:{
-                    skills:{
-                        $in:skillIds
-                    }
+                $match: {
+                    _id: { $in: skillIds }
                 }
             },
             {
-                $project:{
-                    matchedSkills:{
-                        $setIntersection:[
-                            "$skills",
-                            skillIds
-                        ]
-                    },
+                $lookup: {
+                    from: "students",
+                    let: { skillId: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $in: ["$$skillId", "$skills"]
+                                }
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                email: 1,
+                            }
+                        }
+                    ],
+                    as: "students"
                 }
             },
             {
-                $addFields:{
-                    matchedSkillCount:{$size:"$matchedSkills"}
+                $addFields: {
+                    studentCount: { $size: "$students" }
                 }
             },
             {
-                $count: "totalStudents"
+                $project: {
+                    skillname: 1,
+                    studentCount: 1,
+                    students: 1
+                }
             },
             {
-                $sort:{
-                    matchedSkillsCount: -1
+                $sort: {
+                    studentCount: -1
                 }
             }
         ])
