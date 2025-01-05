@@ -1,86 +1,70 @@
-import { NextRequest,NextResponse } from "next/server";
-import Student from "@/models/Student";
+import { NextRequest, NextResponse } from "next/server";
 import Skills from "@/models/Skills";
 import connectMongo from "@/lib/mongodb";
-import mongoose from "mongoose";
 
-interface SkillDocument {
-    _id: mongoose.Types.ObjectId;
-    skillname: string;
-}
+export async function POST(request: NextRequest) {
+  try {
+    // Connect to the database
+    await connectMongo();
 
-export async function POST(request: NextRequest){
-    try {
-        /**
-         * University Verification needed from session.
-         */
-
-        await connectMongo();
-        const resquestBody = await request.json();
-        const { skills } = resquestBody;
-
-        const skillDocuments: SkillDocument[] = await Skills.find(
-            { skillname: { $in: skills } },
-            '_id'
-        );
-
-        const skillIds: mongoose.Types.ObjectId[] = skillDocuments.map(skill => skill._id);
-
-        const StudentsWithSkill = await Skills.aggregate([
+    // Aggregate all skills and their associated students
+    const StudentsWithSkill = await Skills.aggregate([
+      {
+        $lookup: {
+          from: "students",
+          let: { skillId: "$_id" },
+          pipeline: [
             {
-                $match: {
-                    _id: { $in: skillIds }
-                }
+              $match: {
+                $expr: {
+                  $in: ["$$skillId", "$skills"],
+                },
+              },
             },
             {
-                $lookup: {
-                    from: "students",
-                    let: { skillId: "$_id" },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr: {
-                                    $in: ["$$skillId", "$skills"]
-                                }
-                            }
-                        },
-                        {
-                            $project: {
-                                _id: 1,
-                                name: 1,
-                                email: 1,
-                            }
-                        }
-                    ],
-                    as: "students"
-                }
+              $project: {
+                _id: 1,
+                name: 1,
+                email: 1,
+              },
             },
-            {
-                $addFields: {
-                    studentCount: { $size: "$students" }
-                }
-            },
-            {
-                $project: {
-                    skillname: 1,
-                    studentCount: 1,
-                    students: 1
-                }
-            },
-            {
-                $sort: {
-                    studentCount: -1
-                }
-            }
-        ])
+          ],
+          as: "students",
+        },
+      },
+      {
+        $addFields: {
+          studentCount: { $size: "$students" },
+        },
+      },
+      {
+        $project: {
+          skillname: 1,
+          studentCount: 1,
+        },
+      },
+      {
+        $sort: {
+          studentCount: -1, // Sort by student count in descending order
+        },
+      },
+    ]);
 
-        if(!StudentsWithSkill){
-            return NextResponse.json({message:"Student with required skills not available"},{status:404});
-        }
-        
-        return NextResponse.json({data:StudentsWithSkill,message:"Student documents fetched succesfully"},{status:200})
-
-    } catch (error) {
-        return NextResponse.json({message:error.message||"Internal server error"},{status:500})
+    if (!StudentsWithSkill || StudentsWithSkill.length === 0) {
+      return NextResponse.json(
+        { message: "No skills or associated students found." },
+        { status: 404 }
+      );
     }
+
+    return NextResponse.json(
+      { data: StudentsWithSkill, message: "Skills data fetched successfully." },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: error.message || "Internal server error" },
+      { status: 500 }
+    );
+  }
 }
