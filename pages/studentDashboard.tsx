@@ -100,7 +100,9 @@ const StudentDashboard = () => {
             />
           </div>
           <button
-            onClick={fetchJobs}
+            onClick={() => {
+              router.push("/student/applied");
+            }}
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
           >
             Applied

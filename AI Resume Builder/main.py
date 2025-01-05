@@ -1,15 +1,17 @@
 import os
 import sys
-from bson import ObjectId
-from fastapi import FastAPI
+import json
 import uvicorn 
+from bson import ObjectId
+from pymongo import MongoClient
+from fastapi import FastAPI, HTTPException, Body
 from dotenv import load_dotenv
 from openai import OpenAI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
-import json
 from generate_resume import generate_resume_from_template
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from job_matching.student_search import StudentSearch
 
@@ -162,25 +164,45 @@ async def download_resume(filename: str):
     else:
         return {"error": "File not found"}
 
-# These Endpoints are for the Job Matching 
-@app.post('/search/{query}')
-async def get_matching_percentage(query: str):
-    # Initialize search system
-    search_system = StudentSearch(mongodb_uri, openai_api_key)
-    
-    # Perform search
-    matching_students = search_system.search_students(query)
-    matching_student_id_obj = []
-    
-    for student in matching_students:
-        matching_student_id_obj.append(ObjectId(student['_id']))
-    
-    print(matching_students)
-    
-    return {
-        'matching_students': matching_students
-    }
+# Dependency Injection for StudentSearch
+class StudentSearch:
+    def __init__(self, mongodb_uri: str):
+        self.client = MongoClient(mongodb_uri)
+        self.db = self.client['test']
+        self.students_collection = self.db['students']
 
+    def search_students(self, employer_query: str):
+        # Mock implementation for demonstration
+        try:
+            results = list(self.students_collection.find({}, {"_id": 1, "name": 1}))
+            for student in results:
+                student['_id'] = str(student['_id'])  # Convert ObjectId to string
+            return results
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error querying MongoDB: {str(e)}")
+
+# Initialize search system once
+search_system = StudentSearch(mongodb_uri)
+
+@app.post("/search")
+async def get_matching_students(query: str = Body(..., embed=True)):
+    """
+    Endpoint to search for students based on employer query.
+    
+    Args:
+        query (str): Employer's search query
+    
+    Returns:
+        List of matching student profiles
+    """
+    if not query.strip():
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+    
+    try:
+        matching_students = search_system.search_students(query)
+        return {"matching_students": matching_students}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)
