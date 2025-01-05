@@ -1,8 +1,8 @@
 import UniversityDashboard from '@/pages/universityDashboard';
 import Analytics from '../sections/Analytics';
-import EmployerCount from '../sections/EmployerCount';
 import SkillGap from '../sections/SkillGap';
 import FetchStudents from '../sections/FetchStudents';
+import EmployerList from '../sections/EmployerList';
  
 
 const Dashboard = () => {
@@ -20,7 +20,7 @@ const Dashboard = () => {
         <FetchStudents />
       </div>
       <div className='h-screen'>
-        <EmployerCount />
+        <EmployerList />
       </div>
       <div className='h-screen'>
         <SkillGap />
