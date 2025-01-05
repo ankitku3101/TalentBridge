@@ -1,5 +1,5 @@
 import UniversityDashboard from '@/pages/universityDashboard';
-import Analytics from '../sections/Analytics';
+import Analytics from '../sections/DegreeSearch';
 import SkillGap from '../sections/SkillGap';
 import FetchStudents from '../sections/FetchStudents';
 import EmployerList from '../sections/EmployerList';
@@ -13,16 +13,16 @@ const Dashboard = () => {
           University Dashboard
         </h1>
       </div>
-      <div className='h-screen'>
+      <div className='h-full'>
         <Analytics />
       </div>
-      <div className='h-screen'>
+      <div className='h-full'>
         <FetchStudents />
       </div>
-      <div className='h-screen'>
+      <div className='h-full'>
         <EmployerList />
       </div>
-      <div className='h-screen'>
+      <div className='h-full'>
         <SkillGap />
       </div>
     </div>
