@@ -40,7 +40,7 @@ const EmployerList: React.FC = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="font-bold text-xl mb-4 text-blue-600">Employer List</h2>
+      <h2 className="font-bold text-2xl mb-4 text-black-600">Employer List</h2>
 
       {/* Loading and Error States */}
       {loading && <p>Loading...</p>}
