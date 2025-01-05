@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const skills = document.getElementById("skills").value;
 
       if (projectTitle && skills) {
-        const response = await fetch("http://127.0.0.1:8080/project-desc", {
+        const response = await fetch("https://mole-model-drake.ngrok-free.app/project-desc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const companyName = document.getElementById("company_name").value;
 
     if (jobTitle && companyName) {
-      const response = await fetch("http://127.0.0.1:8080/job-desc", {
+      const response = await fetch("https://mole-model-drake.ngrok-free.app/job-desc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const pastExperience = document.getElementById("job_description").value;
 
       if (skills && pastExperience) {
-        const response = await fetch("http://127.0.0.1:8080/career-obj", {
+        const response = await fetch("https://mole-model-drake.ngrok-free.app/career-obj", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ 
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Send the form data to the backend to save as JSON and generate the resume
-    const response = await fetch("http://127.0.0.1:8080/generate-resume", {
+    const response = await fetch("https://mole-model-drake.ngrok-free.app/generate-resume", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -104,12 +104,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const filename = data.downloaded; // Extract the filename from the response
       
       const downloadLink = document.createElement("a");
-      downloadLink.href = `http://127.0.0.1:8080/download/${filename}`;
+      downloadLink.href = `https://mole-model-drake.ngrok-free.app/download/${filename}`;
       downloadLink.textContent = "Download your resume";
-      downloadLink.download = filename; // Suggest a filename for download
+      downloadLink.download = filename; 
       downloadLink.style.display = "block";
       downloadLink.style.marginTop = "20px";
-      downloadLink.style.color("black")
+      downloadLink.style.color="black";
       document.body.appendChild(downloadLink);
     } else {
       alert("Error generating resume. Please try again.");

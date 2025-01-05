@@ -131,7 +131,7 @@ async def generate_resume(request: request):
     form_data = request.dict()
     
     # Save the form data as JSON for record-keeping
-    with open("AI Resume Builder/user_data/user_data.json", "w") as f:
+    with open("./user_data/user_data.json", "w") as f:
         json.dump(form_data, f, indent=4)
 
     # Generate the resume

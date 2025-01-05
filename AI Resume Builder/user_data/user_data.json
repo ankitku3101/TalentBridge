@@ -1,20 +1,15 @@
 {
     "name": "Hitesh Mohanty",
-    "job_title": "intern",
+    "job_title": "AI intern",
     "address": "36-Gopindhpur,near Odisha Adarsh Vidyalaya, Jatani gate road",
     "phone": "07205374495",
-    "email": "mohantyhitesh4495@gmail.com",
-    "career_objective": "xdfcghvjb",
+    "email": "mohanty2022@gift.edu.in",
+    "career_objective": "Aspiring software developer with expertise in Java, C, C++, Python, and web technologies seeks to leverage machine learning experience and algorithm optimization skills to drive innovative solutions. Committed to enhancing user experience and contributing to impactful projects within a dynamic team environment.",
     "education": [
         {
             "degree": "B.Tech in Computer Science and Engineering",
             "institute": "GIFT Autonomous, Bhubaneswar ",
             "year": "2026"
-        },
-        {
-            "degree": "Intermediate (+2)",
-            "institute": "Aska Science College, Aska",
-            "year": "2022"
         }
     ],
     "skills": [
@@ -29,8 +24,8 @@
     ],
     "projects": [
         {
-            "name": "AI-Driven Crop Recommendation System",
-            "description": "vbnm"
+            "name": "Hospital Management System",
+            "description": "Developed a Hospital Management System utilizing Java, C, C++, and Python for backend processes, with an intuitive HTML, CSS, and JavaScript frontend. Implemented SQL for database management, streamlining patient records, appointments, and billing. This project"
         }
     ]
 }
