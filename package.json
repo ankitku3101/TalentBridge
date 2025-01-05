@@ -13,6 +13,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/mongoose": "^5.11.96",
     "@types/react-toastify": "^4.1.0",
+    "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.7",
     "class-variance-authority": "^0.7.1",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/axios": "^0.9.36",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
