@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import uvicorn 
+import ngrok
 from bson import ObjectId
 from pymongo import MongoClient
 from fastapi import FastAPI, HTTPException, Body
@@ -16,7 +17,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from job_matching.student_search import main
 
 
-load_dotenv(".env.local")
+load_dotenv("../.env.local")
 
 # Load environment variables
 mongodb_uri = os.getenv("MONGODB_URI")
@@ -198,4 +199,7 @@ async def get_matching_students(query: str = Body(..., embed=True)):
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)
+    listener = ngrok.forward(addr=8080, domain="mole-model-drake.ngrok-free.app", authtoken_from_env = True)
+    print(listener.url())
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
+    ngrok.disconnect()
