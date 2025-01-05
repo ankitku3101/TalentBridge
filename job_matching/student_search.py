@@ -145,25 +145,17 @@ class StudentSearch:
         try:
             results = list(self.students_collection.find(
                 mongo_query,
-                {
-                    "_id": 1,
-                    "name": 1,
-                    "skills": 1,
-                    "degree": 1,
-                    "graduationYear": 1,
-                    "yoe": 1,
-                    "email": 1,
-                    "phone": 1
-                }
+                {"_id": 1, "name": 1, "skills": 1, "degree": 1, "graduationYear": 1, "yoe": 1}
             ))
+            for student in results:
+                student['_id'] = str(student['_id'])  # Convert ObjectId to string
             return results
-            
         except Exception as e:
             print(f"Error querying MongoDB: {str(e)}")
             return []
 
 
-def main():
+def main(employer_query):
     load_dotenv('.env.local')
     # Load environment variables
     mongodb_uri = os.getenv("MONGODB_URI")
@@ -172,25 +164,10 @@ def main():
     # Initialize search system
     search_system = StudentSearch(mongodb_uri, openai_api_key)
     
-    # Example employer query
-    employer_query = """
-    Looking for a student having m.tech degree
-    """
-    
     # Perform search
     matching_students = search_system.search_students(employer_query)
     
-    # Print results
-    print(f"\nFound {len(matching_students)} matching students:")
-    for student in matching_students:
-        print(f"\nName: {student['name']}")
-        print(f"Skills: {', '.join(student['skills'])}")
-        print(f"Degree: {student['degree']}")
-        print(f"Graduation Year: {student['graduationYear']}")
-        if "yoe" in student.keys():
-            print(f"Years of Experience: {student['yoe']}")
-        print(f"Contact Email: {student['email']}")
-        print(f"Phone: {student['phone']}")
-
+    return matching_students
+    
 if __name__ == "__main__":
     main()
