@@ -8,6 +8,11 @@ import Link from 'next/link';
 const Dashboard = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Header Section */}
+      <header className="bg-blue-500 text-white p-4 text-center">
+        <h1 className="text-3xl font-bold">University Dashboard</h1>
+      </header>
+
       {/* Job Listing Section */}
       <div className="flex-1 mb-4 bg-white shadow-lg rounded-lg p-6">
         <JobListing />
