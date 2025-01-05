@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 
 const SignupPage = () => {
   const [userType, setUserType] = useState<'Student' | 'Employer'>('Student');
+  const [colleges, setColleges] = useState<{ id: string; name: string }[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -21,13 +22,29 @@ const SignupPage = () => {
     position: '',
     hiringFor: '',
     contactNumber: '',
-    yoe:0
+    yoe: 0,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    // Fetch college list on load
+    const fetchColleges = async () => {
+      try {
+        const response = await fetch('/api/university/list-all');
+        if (!response.ok) throw new Error('Failed to fetch colleges');
+        const data = await response.json();
+        setColleges(data.data);
+      } catch (error) {
+        toast.error('Error fetching college list');
+        console.error(error.message);
+      }
+    };
+    fetchColleges();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -48,7 +65,7 @@ const SignupPage = () => {
       position: '',
       hiringFor: '',
       contactNumber: '',
-      yoe:0
+      yoe: 0,
     });
   };
 
@@ -96,7 +113,7 @@ const SignupPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md -mt-12"  // Added negative margin-top to move the card upwards
+        className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md -mt-12"
       >
         <h2 className="text-3xl font-semibold mb-6 text-center">Sign Up</h2>
         <div className="mb-4">
@@ -159,15 +176,20 @@ const SignupPage = () => {
                 required
                 className="w-full px-4 py-2 border rounded-lg"
               />
-              <input
-                type="text"
+              <select
                 name="college"
-                placeholder="College"
                 value={formData.college}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border rounded-lg"
-              />
+              >
+                <option value="">Select College</option>
+                {colleges.map((college) => (
+                  <option key={college.id} value={college.name}>
+                    {college.name}
+                  </option>
+                ))}
+              </select>
               <input
                 type="number"
                 name="graduationYear"
@@ -192,15 +214,6 @@ const SignupPage = () => {
                 placeholder="Skills (comma-separated)"
                 value={formData.skills}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-              <input
-                type="number"
-                name="yoe"
-                placeholder="Year Of Experience"
-                value={formData.yoe}
-                onChange={handleChange}
-                required
                 className="w-full px-4 py-2 border rounded-lg"
               />
             </>
