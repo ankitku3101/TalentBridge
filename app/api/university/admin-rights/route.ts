@@ -8,15 +8,15 @@ export async function POST(request:NextRequest){
         const requestBody = await request.json();
         const {
             name,
-            adminname,
-            adminpassword
+            email,
+            password
         } = requestBody;
 
-        if([name,adminname,adminpassword].some((fields)=>fields.trim()==="")){
+        if([name,email,password].some((fields)=>fields.trim()==="")){
             return NextResponse.json({error:"Some values are missing"},{status:406})
         }
 
-        const isExists = await University.exists({name,adminname});
+        const isExists = await University.exists({name,email});
 
         if(isExists){
             return NextResponse.json({error:"Account Already exists"},{status:400});
@@ -24,8 +24,8 @@ export async function POST(request:NextRequest){
 
         const newAcc = await University.create({
             name,
-            adminname,
-            adminpassword
+            email,
+            password
         })
 
         if(!newAcc){

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcryptjs';
+import { unique } from "next/dist/build/utils";
 
 const universitySchema = new mongoose.Schema(
     {
@@ -9,13 +10,13 @@ const universitySchema = new mongoose.Schema(
             trim:true,
             unique:true
         },
-        adminname:{
+        email:{
             type:String,
-            required:true,
-            trim:true,
-            lowercase:true,
+            unique:true,
+            lowecase:true,
+            trim:true
         },
-        adminpassword:{
+        password:{
             type:String,
             required:true,
             trim:true,
@@ -23,7 +24,7 @@ const universitySchema = new mongoose.Schema(
         employerreach:[
             {
                 type:mongoose.Schema.Types.ObjectId,
-                ref:'Emplopyer'
+                ref:'Employer'
             }
         ],
         role:{
@@ -37,14 +38,14 @@ const universitySchema = new mongoose.Schema(
 )
 
 universitySchema.pre('save',async function(next){
-    if(!this.isModified("adminpassword")){next()}
+    if(!this.isModified("password")){next()}
 
-    this.adminpassword = await bcrypt.hash(this.adminpassword,15);
+    this.password = await bcrypt.hash(this.password,15);
     next()
 })
 
 universitySchema.methods.isPasswordCorrect = async function(password){
-    return await bcrypt.compare(this.adminpassword,password);
+    return await bcrypt.compare(this.password,password);
 }
 
 export default mongoose.models.University || mongoose.model('University', universitySchema);
