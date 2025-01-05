@@ -57,6 +57,11 @@ const studentSchema = new mongoose.Schema(
         validator:(value:number)=> value>=0,
         message:"Year of experience can't be in negative."
       }
+    },
+    college:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'University',
+      required:true,
     }
   },
   { 
