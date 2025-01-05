@@ -7,23 +7,23 @@ export async function POST(request:NextRequest){
         await connectMongo();
         const requestBody = await request.json();
         const {
-            universityname,
+            name,
             adminname,
             adminpassword
         } = requestBody;
 
-        if([universityname,adminname,adminpassword].some((fields)=>fields.trim()==="")){
+        if([name,adminname,adminpassword].some((fields)=>fields.trim()==="")){
             return NextResponse.json({error:"Some values are missing"},{status:406})
         }
 
-        const isExists = await University.exists({universityname,adminname});
+        const isExists = await University.exists({name,adminname});
 
         if(isExists){
             return NextResponse.json({error:"Account Already exists"},{status:400});
         }
 
         const newAcc = await University.create({
-            universityname,
+            name,
             adminname,
             adminpassword
         })
