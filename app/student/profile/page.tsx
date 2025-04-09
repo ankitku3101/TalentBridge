@@ -133,19 +133,6 @@ const ProfilePage = () => {
                 required
               />
             </div>
-            {/* <div>
-              <label className="block mb-2 font-medium" htmlFor="college">
-                College
-              </label>
-              <input
-                className="w-full p-3 border rounded focus:ring focus:ring-blue-300"
-                type="text"
-                id="college"
-                defaultValue={student.college}
-                name="college"
-                required
-              />
-            </div> */}
             <div>
               <label className="block mb-2 font-medium" htmlFor="graduationYear">
                 Graduation Year
@@ -160,7 +147,7 @@ const ProfilePage = () => {
               />
             </div>
             <div>
-              <label className="block mb-2 font-medium" htmlFor="graduationYear">
+              <label className="block mb-2 font-medium" htmlFor="yoe">
                 Year Of Experience
               </label>
               <input
@@ -201,9 +188,6 @@ const ProfilePage = () => {
               <strong>Degree:</strong> {student.degree}
             </p>
             <p className="mb-2">
-              <strong>College Name:</strong> {student.college.name}
-            </p>
-            <p className="mb-2">
               <strong>Graduation Year:</strong> {student.graduationYear}
             </p>
             <p className="mb-2">
@@ -221,12 +205,10 @@ const ProfilePage = () => {
 
             <h3 className="text-xl font-semibold mt-4">Skills</h3>
             <ul className="list-disc pl-6 space-y-2">
-                {student.skills?.map((skill: string, index: number) => (
-                  <li key={index}>{skill}</li>
-                ))}
+              {student.skills?.map((skill: string, index: number) => (
+                <li key={index}>{skill}</li>
+              ))}
             </ul>
-
-
 
             <button
               onClick={handleEditClick}
